@@ -1,0 +1,45 @@
+{
+  "name": "@simple-blog/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.4.1",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@hookform/resolvers": "^2.9.10",
+    "@nozbe/watermelondb": "^0.24.0",
+    "framer-motion": "^7.6.12",
+    "lodash": "^4.17.21",
+    "lokijs": "^1.5.12",
+    "moment": "^2.29.4",
+    "react": "^18.2.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.39.5",
+    "react-router-dom": "^6.4.3",
+    "scheduler": "^0.23.0",
+    "use-context-selector": "^1.4.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.20.2",
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@vitejs/plugin-react": "^2.2.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.2.3",
+    "vite-tsconfig-paths": "^3.6.0"
+  }
+}

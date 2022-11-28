@@ -1,0 +1,18 @@
+{
+  "name": "simple-blog",
+  "version": "1.0.0",
+  "description": "Um blog simples com React Native e Sincronização com o Backend",
+  "main": "index.js",
+  "author": "Cristian \"SknZ\" Ferreira <cristian.datingaa@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "apps/*"
+    ]
+  },
+  "devDependencies": {
+    "typescript": "^4.9.3"
+  }
+}
