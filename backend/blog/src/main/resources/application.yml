@@ -1,0 +1,6 @@
+spring:
+  main:
+    web-application-type: reactive
+  data:
+    mongodb:
+      uri: mongodb://root:simpleblog@mongo:27017/blog
