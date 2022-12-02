@@ -1,4 +1,4 @@
-package me.sknz.simpleblog.model
+package me.sknz.simpleblog.domain.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -6,16 +6,19 @@ import org.springframework.data.mongodb.core.mapping.Field
 import java.time.OffsetDateTime
 import java.util.UUID
 
-@Document(CommentLike.table)
-class CommentLike {
+@Document(PostComment.table)
+class PostComment {
 
     @Id
     lateinit var id: UUID
 
-    @Field("comment_id")
-    lateinit var commentId: UUID
+    lateinit var content: String
+    @Field("post_id")
+    lateinit var postId: UUID
     @Field("user_id")
     lateinit var userId: UUID
+
+    val likes = arrayListOf<UUID>()
 
     @Field("created_at")
     lateinit var createdAt: OffsetDateTime
@@ -23,6 +26,6 @@ class CommentLike {
     lateinit var updatedAt: OffsetDateTime
 
     companion object {
-        const val table = "comment_likes"
+        const val table = "comments"
     }
 }

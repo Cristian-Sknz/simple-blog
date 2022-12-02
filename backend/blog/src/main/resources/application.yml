@@ -3,4 +3,14 @@ spring:
     web-application-type: reactive
   data:
     mongodb:
-      uri: mongodb://root:simpleblog@mongo:27017/blog
+      host: localhost
+      port: 27017
+      authentication-database: admin
+      username: root
+      password: simpleblog
+      database: simpleblog
+
+authentication:
+  jwt:
+    client-secret: simpleblog-random-secret
+    expires: 3600

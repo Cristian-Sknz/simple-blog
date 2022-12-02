@@ -1,4 +1,4 @@
-package me.sknz.simpleblog.model
+package me.sknz.simpleblog.domain.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

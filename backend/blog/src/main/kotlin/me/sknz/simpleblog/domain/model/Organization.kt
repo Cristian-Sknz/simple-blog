@@ -1,4 +1,4 @@
-package me.sknz.simpleblog.model
+package me.sknz.simpleblog.domain.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
@@ -6,19 +6,14 @@ import org.springframework.data.mongodb.core.mapping.Field
 import java.time.OffsetDateTime
 import java.util.UUID
 
-@Document(BlogUser.table)
-class BlogUser {
+@Document(Organization.table)
+class Organization {
 
     @Id
     lateinit var id: UUID
-
     lateinit var name: String
-    lateinit var username: String
-    lateinit var email: String
 
-    var image: String? = null
-
-    var organizations = arrayListOf<UUID>()
+    var members = arrayListOf<UUID>()
 
     @Field("created_at")
     lateinit var createdAt: OffsetDateTime
@@ -26,6 +21,6 @@ class BlogUser {
     lateinit var updatedAt: OffsetDateTime
 
     companion object {
-        const val table = "users"
+        const val table = "organizations"
     }
 }
