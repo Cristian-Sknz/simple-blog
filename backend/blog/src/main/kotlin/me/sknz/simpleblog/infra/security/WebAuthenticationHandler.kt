@@ -22,7 +22,7 @@ class WebAuthenticationHandler(
     private val factory = DefaultDataBufferFactory()
 
     override fun onAuthenticationFailure(webFilterExchange: WebFilterExchange, exception: AuthenticationException): Mono<Void> {
-        return Mono.from {
+        return Mono.fromRunnable {
             val exchange = webFilterExchange.exchange
             val response = exchange.response
             val node = mapper.createObjectNode()
