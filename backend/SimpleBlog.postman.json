@@ -1,0 +1,1305 @@
+{
+	"info": {
+		"_postman_id": "4c7ddd73-83bf-4ff9-97d0-cd275f88ae86",
+		"name": "SimpleBlog API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11216235"
+	},
+	"item": [
+		{
+			"name": "Organizations (/api/organizations)",
+			"item": [
+				{
+					"name": "Posts (/:id/posts)",
+					"item": [
+						{
+							"name": "Comments (/:postid/comments)",
+							"item": [
+								{
+									"name": "Likes (/:commentid/likes)",
+									"item": [
+										{
+											"name": "Push Like (/)",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"url": {
+													"raw": "{{server-host}}/api/organizations/:id/posts/:postid/comments/:commentid/likes",
+													"host": [
+														"{{server-host}}"
+													],
+													"path": [
+														"api",
+														"organizations",
+														":id",
+														"posts",
+														":postid",
+														"comments",
+														":commentid",
+														"likes"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "{{organization-id}}"
+														},
+														{
+															"key": "postid",
+															"value": "{{post-id}}"
+														},
+														{
+															"key": "commentid",
+															"value": "{{comment-id}}"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Remove Like (/)",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{server-host}}/api/organizations/:id/posts/:postid/comments/:commentid/likes",
+													"host": [
+														"{{server-host}}"
+													],
+													"path": [
+														"api",
+														"organizations",
+														":id",
+														"posts",
+														":postid",
+														"comments",
+														":commentid",
+														"likes"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "{{organization-id}}"
+														},
+														{
+															"key": "postid",
+															"value": "{{post-id}}"
+														},
+														{
+															"key": "commentid",
+															"value": "{{comment-id}}"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Get Comments (/)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts/:postid/comments",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts",
+												":postid",
+												"comments"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												},
+												{
+													"key": "postid",
+													"value": "{{post-id}}",
+													"description": "UUID do post"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Comment (/:commentid)",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts/:postid/comments/:commentid",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts",
+												":postid",
+												"comments",
+												":commentid"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												},
+												{
+													"key": "postid",
+													"value": "{{post-id}}",
+													"description": "UUID do post"
+												},
+												{
+													"key": "commentid",
+													"value": null,
+													"description": "UUID do comentario"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create a Comment (/)",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"content\": \"Meu primeiro comentario\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts/:postid/comments",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts",
+												":postid",
+												"comments"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												},
+												{
+													"key": "postid",
+													"value": "{{post-id}}",
+													"description": "UUID do post"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Likes (/:postid/likes)",
+							"item": [
+								{
+									"name": "Push Like (/)",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts/:postid/likes",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts",
+												":postid",
+												"likes"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												},
+												{
+													"key": "postid",
+													"value": "{{post-id}}",
+													"description": "UUID do post"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove Like (/)",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts/:postid/likes",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts",
+												":postid",
+												"likes"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												},
+												{
+													"key": "postid",
+													"value": "{{post-id}}",
+													"description": "UUID do post"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Posts (/)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/posts",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"posts"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Invalid Organization",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "11880"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"timestamp\": \"2022-12-04T01:34:07.069+00:00\",\n    \"path\": \"/api/organizations/9396b0ed-bd6b-41a4-a50c-30918a733bf3/posts\",\n    \"status\": 404,\n    \"error\": \"Not Found\",\n    \"message\": \"Organização não foi encontrada\",\n    \"requestId\": \"4dc13680-6\",\n    \"trace\": \"org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND \\\"Organização não foi encontrada\\\"\\n\\tat me.sknz.simpleblog.domain.service.OrganizationService$findById$1.invoke(OrganizationService.kt:19)\\n\\tSuppressed: The stacktrace has been enhanced by Reactor, refer to additional information below: \\nError has been observed at the following site(s):\\n\\t*__checkpoint ⇢ Handler me.sknz.simpleblog.controller.OrganizationPostController#getOrganizationPosts(UUID) [DispatcherHandler]\\n\\t*__checkpoint ⇢ org.springframework.web.cors.reactive.CorsWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authorization.AuthorizationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authorization.ExceptionTranslationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authentication.logout.LogoutWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.savedrequest.ServerRequestCacheWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.context.SecurityContextServerWebExchangeWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authentication.AuthenticationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authentication.AuthenticationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.context.ReactorContextWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.header.HttpHeaderWriterWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.config.web.server.ServerHttpSecurity$ServerWebExchangeReactorContextWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.WebFilterChainProxy [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ HTTP GET \\\"/api/organizations/9396b0ed-bd6b-41a4-a50c-30918a733bf3/posts\\\" [ExceptionHandlingWebHandler]\\nOriginal Stack Trace:\\n\\t\\tat me.sknz.simpleblog.domain.service.OrganizationService$findById$1.invoke(OrganizationService.kt:19)\\n\\t\\tat me.sknz.simpleblog.domain.service.OrganizationService$findById$1.invoke(OrganizationService.kt:18)\\n\\t\\tat reactor.kotlin.core.publisher.MonoExtensionsKt.switchIfEmpty$lambda-4(MonoExtensions.kt:138)\\n\\t\\tat reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:44)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4444)\\n\\t\\tat reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onComplete(FluxSwitchIfEmpty.java:82)\\n\\t\\tat reactor.core.publisher.MonoUsingWhen$MonoUsingWhenSubscriber.deferredComplete(MonoUsingWhen.java:270)\\n\\t\\tat reactor.core.publisher.FluxUsingWhen$CommitInner.onComplete(FluxUsingWhen.java:527)\\n\\t\\tat reactor.core.publisher.Operators.complete(Operators.java:137)\\n\\t\\tat reactor.core.publisher.MonoEmpty.subscribe(MonoEmpty.java:46)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4444)\\n\\t\\tat reactor.core.publisher.FluxUsingWhen$UsingWhenSubscriber.onComplete(FluxUsingWhen.java:384)\\n\\t\\tat reactor.core.publisher.Operators$MultiSubscriptionSubscriber.onComplete(Operators.java:2168)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:250)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onComplete(MonoFlatMap.java:324)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.onComplete(MonoFlatMap.java:189)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:250)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onComplete(MonoFlatMap.java:324)\\n\\t\\tat reactor.core.publisher.MonoCreate$DefaultMonoSink.success(MonoCreate.java:140)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.BatchCursorPublisher.lambda$first$0(BatchCursorPublisher.java:112)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onComplete(MonoPeekTerminal.java:289)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onComplete(MonoPeekTerminal.java:299)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onComplete(MonoPeekTerminal.java:299)\\n\\t\\tat reactor.core.publisher.MonoCreate$DefaultMonoSink.success(MonoCreate.java:140)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.MongoOperationPublisher.lambda$sinkToCallback$31(MongoOperationPublisher.java:575)\\n\\t\\tat com.mongodb.internal.operation.AsyncQueryBatchCursor.next(AsyncQueryBatchCursor.java:178)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.BatchCursor.lambda$next$0(BatchCursor.java:38)\\n\\t\\tat reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:58)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4444)\\n\\t\\tat reactor.core.publisher.Mono.subscribeWith(Mono.java:4510)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4272)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.BatchCursorPublisher.lambda$first$1(BatchCursorPublisher.java:118)\\n\\t\\tat reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:58)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext(MonoFlatMap.java:165)\\n\\t\\tat reactor.core.publisher.FluxMap$MapSubscriber.onNext(FluxMap.java:122)\\n\\t\\tat reactor.core.publisher.MonoNext$NextSubscriber.onNext(MonoNext.java:82)\\n\\t\\tat reactor.core.publisher.MonoNext$NextSubscriber.onNext(MonoNext.java:82)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:245)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onNext(MonoFlatMap.java:305)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext(MonoPeekTerminal.java:180)\\n\\t\\tat reactor.core.publisher.MonoCreate$DefaultMonoSink.success(MonoCreate.java:172)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.MongoOperationPublisher.lambda$sinkToCallback$31(MongoOperationPublisher.java:577)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.OperationExecutorImpl.lambda$execute$2(OperationExecutorImpl.java:94)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.async.function.AsyncCallbackSupplier.lambda$whenComplete$1(AsyncCallbackSupplier.java:97)\\n\\t\\tat com.mongodb.internal.async.function.RetryingAsyncCallbackSupplier$RetryingCallback.onResult(RetryingAsyncCallbackSupplier.java:116)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.async.function.AsyncCallbackSupplier.lambda$whenComplete$1(AsyncCallbackSupplier.java:97)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.async.function.AsyncCallbackSupplier.lambda$whenComplete$1(AsyncCallbackSupplier.java:97)\\n\\t\\tat com.mongodb.internal.operation.FindOperation$1.onResult(FindOperation.java:379)\\n\\t\\tat com.mongodb.internal.operation.CommandOperationHelper.lambda$transformingReadCallback$10(CommandOperationHelper.java:332)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.connection.DefaultServer$DefaultServerProtocolExecutor$1.onResult(DefaultServer.java:242)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.connection.CommandProtocolImpl$1.onResult(CommandProtocolImpl.java:84)\\n\\t\\tat com.mongodb.internal.connection.DefaultConnectionPool$PooledConnection$1.onResult(DefaultConnectionPool.java:683)\\n\\t\\tat com.mongodb.internal.connection.UsageTrackingInternalConnection$2.onResult(UsageTrackingInternalConnection.java:159)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$2$1.onResult(InternalStreamConnection.java:524)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$2$1.onResult(InternalStreamConnection.java:501)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback$MessageCallback.onResult(InternalStreamConnection.java:824)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback$MessageCallback.onResult(InternalStreamConnection.java:788)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:648)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:645)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.readAsync(NettyStream.java:319)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.readAsync(NettyStream.java:266)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection.readAsync(InternalStreamConnection.java:645)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection.access$600(InternalStreamConnection.java:89)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback.onResult(InternalStreamConnection.java:778)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback.onResult(InternalStreamConnection.java:763)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:648)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:645)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.readAsync(NettyStream.java:319)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.handleReadResponse(NettyStream.java:347)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.access$1100(NettyStream.java:105)\\n\\t\\tat com.mongodb.connection.netty.NettyStream$InboundBufferHandler.channelRead0(NettyStream.java:421)\\n\\t\\tat com.mongodb.connection.netty.NettyStream$InboundBufferHandler.channelRead0(NettyStream.java:418)\\n\\t\\tat io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:99)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)\\n\\t\\tat io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)\\n\\t\\tat io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)\\n\\t\\tat io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)\\n\\t\\tat io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)\\n\\t\\tat io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)\\n\\t\\tat io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)\\n\\t\\tat java.base/java.lang.Thread.run(Thread.java:833)\\n\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get Post (/:postid)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/posts/:postid",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"posts",
+										":postid"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										},
+										{
+											"key": "postid",
+											"value": "{{post-id}}",
+											"description": "UUID do post"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a Post (/)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": null,\n  \"title\": \"Meu titulo\",\n  \"subtitle\": \"Sub\",\n  \"content\": \"Lorem ipsun não lembro o resto kkkkk\",\n  \"created_at\": null,\n  \"updated_at\": null\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/posts",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"posts"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success Creation",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": null,\n  \"title\": \"Meu titulo\",\n  \"subtitle\": \"Sub\",\n  \"content\": \"Lorem ipsun não lembro o resto kkkkk\",\n  \"created_at\": null,\n  \"updated_at\": null\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/posts",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"posts"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												}
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "361"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": \"b73a6621-c5a6-4d19-904e-6918fa5ab0cc\",\n    \"title\": \"Meu titulo\",\n    \"subtitle\": \"Sub\",\n    \"content\": \"Lorem ipsun não lembro o resto kkkkk\",\n    \"userId\": \"9d4d477f-e979-4670-b062-f1f07ffda5d7\",\n    \"organizationId\": \"fb4f248a-abe3-4c92-86e0-25ca349993e5\",\n    \"comments\": [],\n    \"likes\": [],\n    \"createdAt\": \"2022-12-04T18:45:24.05796817-03:00\",\n    \"updatedAt\": \"2022-12-04T18:45:24.058014685-03:00\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Members (/:id/members)",
+					"item": [
+						{
+							"name": "Members (/)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/members",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"members"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										}
+									]
+								},
+								"description": "Obter todos os usuários que compartilham a organização com o usuário logado"
+							},
+							"response": [
+								{
+									"name": "Not a member of the organization",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{server-host}}/api/organizations/:id/members",
+											"host": [
+												"{{server-host}}"
+											],
+											"path": [
+												"api",
+												"organizations",
+												":id",
+												"members"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "{{organization-id}}",
+													"description": "UUID da organização"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "12687"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, no-store, max-age=0, must-revalidate"
+										},
+										{
+											"key": "Pragma",
+											"value": "no-cache"
+										},
+										{
+											"key": "Expires",
+											"value": "0"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "DENY"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"timestamp\": \"2022-12-04T02:51:53.336+00:00\",\n    \"path\": \"/api/organizations/9396b0ed-bd6b-41a4-a50c-30918a733bf3/members\",\n    \"status\": 403,\n    \"error\": \"Forbidden\",\n    \"message\": \"Você não faz parte desta organização\",\n    \"requestId\": \"9d8aff22-2\",\n    \"trace\": \"org.springframework.web.server.ResponseStatusException: 403 FORBIDDEN \\\"Você não faz parte desta organização\\\"\\n\\tat me.sknz.simpleblog.domain.service.MemberService$isOrganizationMember$3.invoke(MemberService.kt:47)\\n\\tSuppressed: The stacktrace has been enhanced by Reactor, refer to additional information below: \\nError has been observed at the following site(s):\\n\\t*__checkpoint ⇢ Handler me.sknz.simpleblog.api.controller.organizations.MemberController#getMembers(UUID) [DispatcherHandler]\\n\\t*__checkpoint ⇢ org.springframework.web.cors.reactive.CorsWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authorization.AuthorizationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authorization.ExceptionTranslationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authentication.logout.LogoutWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.savedrequest.ServerRequestCacheWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.context.SecurityContextServerWebExchangeWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authentication.AuthenticationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.authentication.AuthenticationWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.context.ReactorContextWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.header.HttpHeaderWriterWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.config.web.server.ServerHttpSecurity$ServerWebExchangeReactorContextWebFilter [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ org.springframework.security.web.server.WebFilterChainProxy [DefaultWebFilterChain]\\n\\t*__checkpoint ⇢ HTTP GET \\\"/api/organizations/9396b0ed-bd6b-41a4-a50c-30918a733bf3/members\\\" [ExceptionHandlingWebHandler]\\nOriginal Stack Trace:\\n\\t\\tat me.sknz.simpleblog.domain.service.MemberService$isOrganizationMember$3.invoke(MemberService.kt:47)\\n\\t\\tat me.sknz.simpleblog.domain.service.MemberService$isOrganizationMember$3.invoke(MemberService.kt:46)\\n\\t\\tat reactor.kotlin.core.publisher.MonoExtensionsKt.switchIfEmpty$lambda-4(MonoExtensions.kt:138)\\n\\t\\tat reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:44)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4444)\\n\\t\\tat reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onComplete(FluxSwitchIfEmpty.java:82)\\n\\t\\tat reactor.core.publisher.MonoNext$NextSubscriber.onComplete(MonoNext.java:102)\\n\\t\\tat reactor.core.publisher.FluxFilter$FilterSubscriber.onComplete(FluxFilter.java:166)\\n\\t\\tat reactor.core.publisher.FluxFlatMap$FlatMapMain.checkTerminated(FluxFlatMap.java:846)\\n\\t\\tat reactor.core.publisher.FluxFlatMap$FlatMapMain.drainLoop(FluxFlatMap.java:608)\\n\\t\\tat reactor.core.publisher.FluxFlatMap$FlatMapMain.drain(FluxFlatMap.java:588)\\n\\t\\tat reactor.core.publisher.FluxFlatMap$FlatMapMain.onComplete(FluxFlatMap.java:465)\\n\\t\\tat reactor.core.publisher.FluxSwitchIfEmpty$SwitchIfEmptySubscriber.onComplete(FluxSwitchIfEmpty.java:85)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:246)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onNext(MonoFlatMap.java:305)\\n\\t\\tat reactor.core.publisher.MonoUsingWhen$MonoUsingWhenSubscriber.deferredComplete(MonoUsingWhen.java:268)\\n\\t\\tat reactor.core.publisher.FluxUsingWhen$CommitInner.onComplete(FluxUsingWhen.java:527)\\n\\t\\tat reactor.core.publisher.Operators.complete(Operators.java:137)\\n\\t\\tat reactor.core.publisher.MonoEmpty.subscribe(MonoEmpty.java:46)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4444)\\n\\t\\tat reactor.core.publisher.FluxUsingWhen$UsingWhenSubscriber.onComplete(FluxUsingWhen.java:384)\\n\\t\\tat reactor.core.publisher.Operators$MultiSubscriptionSubscriber.onComplete(Operators.java:2168)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:246)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onNext(MonoFlatMap.java:305)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext(MonoFlatMap.java:158)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:245)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onNext(MonoFlatMap.java:305)\\n\\t\\tat reactor.core.publisher.MonoCreate$DefaultMonoSink.success(MonoCreate.java:172)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.BatchCursorPublisher.lambda$first$0(BatchCursorPublisher.java:114)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext(MonoPeekTerminal.java:171)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext(MonoPeekTerminal.java:180)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext(MonoPeekTerminal.java:180)\\n\\t\\tat reactor.core.publisher.MonoCreate$DefaultMonoSink.success(MonoCreate.java:172)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.MongoOperationPublisher.lambda$sinkToCallback$31(MongoOperationPublisher.java:577)\\n\\t\\tat com.mongodb.internal.operation.AsyncQueryBatchCursor.next(AsyncQueryBatchCursor.java:173)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.BatchCursor.lambda$next$0(BatchCursor.java:38)\\n\\t\\tat reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:58)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4444)\\n\\t\\tat reactor.core.publisher.Mono.subscribeWith(Mono.java:4510)\\n\\t\\tat reactor.core.publisher.Mono.subscribe(Mono.java:4272)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.BatchCursorPublisher.lambda$first$1(BatchCursorPublisher.java:118)\\n\\t\\tat reactor.core.publisher.MonoCreate.subscribe(MonoCreate.java:58)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.onNext(MonoFlatMap.java:165)\\n\\t\\tat reactor.core.publisher.FluxMap$MapSubscriber.onNext(FluxMap.java:122)\\n\\t\\tat reactor.core.publisher.MonoNext$NextSubscriber.onNext(MonoNext.java:82)\\n\\t\\tat reactor.core.publisher.MonoNext$NextSubscriber.onNext(MonoNext.java:82)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapMain.secondComplete(MonoFlatMap.java:245)\\n\\t\\tat reactor.core.publisher.MonoFlatMap$FlatMapInner.onNext(MonoFlatMap.java:305)\\n\\t\\tat reactor.core.publisher.MonoPeekTerminal$MonoTerminalPeekSubscriber.onNext(MonoPeekTerminal.java:180)\\n\\t\\tat reactor.core.publisher.MonoCreate$DefaultMonoSink.success(MonoCreate.java:172)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.MongoOperationPublisher.lambda$sinkToCallback$31(MongoOperationPublisher.java:577)\\n\\t\\tat com.mongodb.reactivestreams.client.internal.OperationExecutorImpl.lambda$execute$2(OperationExecutorImpl.java:94)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.async.function.AsyncCallbackSupplier.lambda$whenComplete$1(AsyncCallbackSupplier.java:97)\\n\\t\\tat com.mongodb.internal.async.function.RetryingAsyncCallbackSupplier$RetryingCallback.onResult(RetryingAsyncCallbackSupplier.java:116)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.async.function.AsyncCallbackSupplier.lambda$whenComplete$1(AsyncCallbackSupplier.java:97)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.async.function.AsyncCallbackSupplier.lambda$whenComplete$1(AsyncCallbackSupplier.java:97)\\n\\t\\tat com.mongodb.internal.operation.FindOperation$1.onResult(FindOperation.java:379)\\n\\t\\tat com.mongodb.internal.operation.CommandOperationHelper.lambda$transformingReadCallback$10(CommandOperationHelper.java:332)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.connection.DefaultServer$DefaultServerProtocolExecutor$1.onResult(DefaultServer.java:242)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.connection.CommandProtocolImpl$1.onResult(CommandProtocolImpl.java:84)\\n\\t\\tat com.mongodb.internal.connection.DefaultConnectionPool$PooledConnection$1.onResult(DefaultConnectionPool.java:683)\\n\\t\\tat com.mongodb.internal.connection.UsageTrackingInternalConnection$2.onResult(UsageTrackingInternalConnection.java:159)\\n\\t\\tat com.mongodb.internal.async.ErrorHandlingResultCallback.onResult(ErrorHandlingResultCallback.java:46)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$2$1.onResult(InternalStreamConnection.java:524)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$2$1.onResult(InternalStreamConnection.java:501)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback$MessageCallback.onResult(InternalStreamConnection.java:824)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback$MessageCallback.onResult(InternalStreamConnection.java:788)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:648)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:645)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.readAsync(NettyStream.java:319)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.readAsync(NettyStream.java:266)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection.readAsync(InternalStreamConnection.java:645)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection.access$600(InternalStreamConnection.java:89)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback.onResult(InternalStreamConnection.java:778)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$MessageHeaderCallback.onResult(InternalStreamConnection.java:763)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:648)\\n\\t\\tat com.mongodb.internal.connection.InternalStreamConnection$5.completed(InternalStreamConnection.java:645)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.readAsync(NettyStream.java:319)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.handleReadResponse(NettyStream.java:347)\\n\\t\\tat com.mongodb.connection.netty.NettyStream.access$1100(NettyStream.java:105)\\n\\t\\tat com.mongodb.connection.netty.NettyStream$InboundBufferHandler.channelRead0(NettyStream.java:421)\\n\\t\\tat com.mongodb.connection.netty.NettyStream$InboundBufferHandler.channelRead0(NettyStream.java:418)\\n\\t\\tat io.netty.channel.SimpleChannelInboundHandler.channelRead(SimpleChannelInboundHandler.java:99)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:444)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:412)\\n\\t\\tat io.netty.channel.DefaultChannelPipeline$HeadContext.channelRead(DefaultChannelPipeline.java:1410)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:440)\\n\\t\\tat io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:420)\\n\\t\\tat io.netty.channel.DefaultChannelPipeline.fireChannelRead(DefaultChannelPipeline.java:919)\\n\\t\\tat io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:166)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)\\n\\t\\tat io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)\\n\\t\\tat io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)\\n\\t\\tat io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)\\n\\t\\tat io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)\\n\\t\\tat java.base/java.lang.Thread.run(Thread.java:833)\\n\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Member (/:id)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/members/:member",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"members",
+										":member"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										},
+										{
+											"key": "member",
+											"value": "{{user-uuid}}",
+											"description": "UUID de um usuario"
+										}
+									]
+								},
+								"description": "Obter um usuário pelo ID (UUID), irá retornar somente usuários que compartilham alguma organização"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Sync (/)",
+					"item": [
+						{
+							"name": "Sync Pull (/:id/sync)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/sync?schema_version=1",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"sync"
+									],
+									"query": [
+										{
+											"key": "schema_version",
+											"value": "1"
+										},
+										{
+											"key": "migration",
+											"value": "",
+											"description": "Migration (não suportado)",
+											"disabled": true
+										},
+										{
+											"key": "last_pulled_at",
+											"value": null,
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sync Push (/:id/sync)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"posts\": {\n\t\t\"created\": [],\n\t\t\"updated\": [],\n\t\t\"deleted\": []\n\t}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server-host}}/api/organizations/:id/sync?last_pulled_at",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"api",
+										"organizations",
+										":id",
+										"sync"
+									],
+									"query": [
+										{
+											"key": "migration",
+											"value": null,
+											"description": "Migration (não suportado)",
+											"disabled": true
+										},
+										{
+											"key": "last_pulled_at",
+											"value": null
+										}
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{organization-id}}",
+											"description": "UUID da organização"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Organizations (/)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server-host}}/api/organizations",
+							"host": [
+								"{{server-host}}"
+							],
+							"path": [
+								"api",
+								"organizations"
+							]
+						},
+						"description": "Obter todos as organizações que o usuário logado está"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Organization (/:id)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server-host}}/api/organizations/:id",
+							"host": [
+								"{{server-host}}"
+							],
+							"path": [
+								"api",
+								"organizations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{organization-id}}",
+									"description": "UUID da organização"
+								}
+							]
+						},
+						"description": "Obter todos as organizações que o usuário logado está"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Organizations Realtime Changes (/:id/changes)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/event-stream",
+								"description": "Sent Server Event",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server-host}}/api/organizations/:id/changes",
+							"host": [
+								"{{server-host}}"
+							],
+							"path": [
+								"api",
+								"organizations",
+								":id",
+								"changes"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{organization-id}}",
+									"description": "UUID da organização"
+								}
+							]
+						},
+						"description": "Obter as mudanças em tempo real de uma organização atravéz de Sent Server Event (SSE)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth (/auth)",
+			"item": [
+				{
+					"name": "Sign In (/login)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let json = JSON.parse(responseBody)",
+									"pm.collectionVariables.set(\"bearer-token\", json.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{auth-username}}",
+									"description": "Usuario ou email",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{auth-password}}",
+									"description": "Senha",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server-host}}/auth/login",
+							"host": [
+								"{{server-host}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "{{auth-username}}",
+											"description": "Usuario ou email",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{auth-password}}",
+											"description": "Senha",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{server-host}}/auth/login",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "content-length",
+									"value": "357"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"expires\": 3600,\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5Mzk2YjBlZC1iZDZiLTQxYTQtYTUwYy0zMDkxOGE3MzNiZjMiLCJleHAiOjE2NzAxMjExNjEsImlhdCI6MTY3MDExNzU2MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJhdXRob3JpdGllcyI6W10sInVzZXJuYW1lIjoiYWRtaW4ifQ.KkgYps1oU4NeGmNRIc4YLTdWb5DxsFUygUNRM1r0ExONhLX7UMVONB8TaoOyOJCt8bJbnCdDOx4nR2BVQOc7Jw\",\n    \"type\": \"Bearar\"\n}"
+						},
+						{
+							"name": "Invalid password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "{{auth-username}}",
+											"description": "Usuario ou email",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "invalidpassword",
+											"description": "Senha",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{server-host}}/auth/login",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "content-length",
+									"value": "138"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"path\": \"/auth/login\",\n    \"status\": 200,\n    \"message\": \"Invalid Credentials\",\n    \"timestamp\": \"2022-12-03T22:39:19.821838783-03:00\"\n}"
+						},
+						{
+							"name": "Invalid Username",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "invalid-username",
+											"description": "Usuario ou email",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{auth-password}}",
+											"description": "Senha",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{server-host}}/auth/login",
+									"host": [
+										"{{server-host}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Referrer-Policy",
+									"value": "no-referrer"
+								},
+								{
+									"key": "content-length",
+									"value": "147"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"path\": \"/auth/login\",\n    \"status\": 200,\n    \"message\": \"Usuário não foi encontrado\",\n    \"timestamp\": \"2022-12-03T22:39:49.505091593-03:00\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Sign In (/signup)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"email\",\n    \"name\": \"name\",\n    \"password\": \"pass\",\n    \"username\": \"username\",\n    \"image\": \"image\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server-host}}/auth/signup",
+							"host": [
+								"{{server-host}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearer-token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "bearer-token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "server-host",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "auth-username",
+			"value": "admin"
+		},
+		{
+			"key": "auth-password",
+			"value": "admin"
+		},
+		{
+			"key": "user-uuid",
+			"value": "e606292d-78a5-4701-8407-97657b8a6651"
+		},
+		{
+			"key": "organization-id",
+			"value": "86f1104b-327c-4041-b349-43c06f39d079"
+		},
+		{
+			"key": "post-id",
+			"value": "10df8b0a-b4a9-4ca2-93e9-091a6c327f3a"
+		},
+		{
+			"key": "comment-id",
+			"value": "b0c67c20-2017-429b-a8ba-6fd3853ec7e8"
+		}
+	]
+}
