@@ -7,10 +7,10 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(CommentLike.table)
-class CommentLike : Model {
+class CommentLike : Model<UUID> {
 
     @Id
-    lateinit var id: UUID
+    override lateinit var id: UUID
 
     @Field("comment_id")
     lateinit var commentId: UUID

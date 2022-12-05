@@ -7,10 +7,10 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(Organization.table)
-class Organization: Model {
+class Organization: Model<UUID> {
 
     @Id
-    lateinit var id: UUID
+    override lateinit var id: UUID
     lateinit var name: String
 
     var members = arrayListOf<UUID>()
@@ -25,5 +25,4 @@ class Organization: Model {
     companion object {
         const val table = "organizations"
     }
-
 }

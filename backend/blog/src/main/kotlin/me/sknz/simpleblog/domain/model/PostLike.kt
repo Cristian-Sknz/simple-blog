@@ -7,10 +7,10 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(PostLike.table)
-class PostLike : Model {
+class PostLike : Model<UUID> {
 
     @Id
-    lateinit var id: UUID
+    override lateinit var id: UUID
 
     @Field("post_id")
     lateinit var postId: UUID

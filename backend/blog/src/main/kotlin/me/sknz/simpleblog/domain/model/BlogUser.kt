@@ -7,10 +7,10 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(BlogUser.table)
-class BlogUser: Model {
+class BlogUser: Model<UUID>{
 
     @Id
-    lateinit var id: UUID
+    override lateinit var id: UUID
 
     lateinit var name: String
     lateinit var username: String

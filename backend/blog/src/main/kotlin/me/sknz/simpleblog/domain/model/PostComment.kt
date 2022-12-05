@@ -7,10 +7,10 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(PostComment.table)
-class PostComment: Model {
+class PostComment: Model<UUID> {
 
     @Id
-    lateinit var id: UUID
+    override lateinit var id: UUID
 
     lateinit var content: String
     @Field("post_id")
@@ -18,7 +18,7 @@ class PostComment: Model {
     @Field("user_id")
     lateinit var userId: UUID
 
-    val likes = arrayListOf<UUID>()
+    var likes = arrayListOf<UUID>()
 
     @Field("created_at")
     lateinit var createdAt: OffsetDateTime
