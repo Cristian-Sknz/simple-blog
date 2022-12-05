@@ -8,14 +8,15 @@ import me.sknz.simpleblog.infra.repository.PostRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.time.OffsetDateTime
 import java.util.*
 
 @Service
 class PostService(
-    private val member: MemberService,
-    private val posts: PostRepository,
-    private val organizations: OrganizationRepository,
-    private val emitter: EmitterService
+    val member: MemberService,
+    val posts: PostRepository,
+    val organizations: OrganizationRepository,
+    val emitter: EmitterService
 ) {
 
     fun getPosts(organization: UUID): Flux<BlogPost> {

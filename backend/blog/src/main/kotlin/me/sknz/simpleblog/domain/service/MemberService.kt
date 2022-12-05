@@ -18,7 +18,7 @@ import java.util.UUID
 
 @Service
 class MemberService(
-    private val users: UserRepository,
+    val users: UserRepository,
     private val organizations: OrganizationRepository
 ) {
 
