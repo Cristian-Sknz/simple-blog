@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(BlogUser.table)
-class BlogUser {
+class BlogUser: Model {
 
     @Id
     lateinit var id: UUID
@@ -25,6 +25,8 @@ class BlogUser {
     lateinit var createdAt: OffsetDateTime
     @Field("updated_at")
     lateinit var updatedAt: OffsetDateTime
+
+    override fun getTable() = table
 
     companion object {
         const val table = "users"

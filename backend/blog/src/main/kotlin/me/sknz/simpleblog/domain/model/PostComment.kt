@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 import java.util.UUID
 
 @Document(PostComment.table)
-class PostComment {
+class PostComment: Model {
 
     @Id
     lateinit var id: UUID
@@ -24,6 +24,8 @@ class PostComment {
     lateinit var createdAt: OffsetDateTime
     @Field("updated_at")
     lateinit var updatedAt: OffsetDateTime
+
+    override fun getTable() = table
 
     companion object {
         const val table = "comments"
