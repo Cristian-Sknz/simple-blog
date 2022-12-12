@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.infra.security
 
+import me.sknz.simpleblog.infra.security.authentication.BearerAuthenticationConverter
 import me.sknz.simpleblog.infra.security.userdetails.BlogUserDetailsService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,9 +15,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 import org.springframework.security.web.server.authentication.ServerFormLoginAuthenticationConverter
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
-import org.springframework.web.cors.reactive.CorsWebFilter
 import reactor.core.publisher.Mono
 
 @Configuration
@@ -26,12 +24,15 @@ class SecurityConfig {
 
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity, userDetailsService: BlogUserDetailsService, provider: JWTProvider): SecurityWebFilterChain {
-        return http.authorizeExchange()
+        return http.cors().and().authorizeExchange()
                     .pathMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+                    // Permitir os métodos OPTIONS, pois a autenticação acaba bloqueando o Preflight
+                    .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .anyExchange()
                     .authenticated().and()
             .addFilterAt(basicAuthenticationFilter(userDetailsService, provider), SecurityWebFiltersOrder.HTTP_BASIC)
                 .csrf().disable()
+
                 .addFilterAt(bearerAuthenticationFilter(provider), SecurityWebFiltersOrder.AUTHENTICATION)
             .build()
     }
@@ -56,19 +57,6 @@ class SecurityConfig {
             it.setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers("/api/**"))
             return@let it
         }
-    }
-
-    @Bean
-    fun corsWebFilter(): CorsWebFilter {
-        val configuration = CorsConfiguration()
-        val source = UrlBasedCorsConfigurationSource()
-        configuration.allowCredentials = true
-        configuration.addAllowedHeader("*")
-        configuration.addAllowedMethod("*")
-        configuration.allowedOriginPatterns = listOf("*")
-        configuration.maxAge = 3600L
-        source.registerCorsConfiguration("/**", configuration)
-        return CorsWebFilter(source)
     }
 
     @Bean

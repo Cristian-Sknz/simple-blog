@@ -1,14 +1,12 @@
 package me.sknz.simpleblog.domain.service
 
 import me.sknz.simpleblog.domain.dto.PostDTO
-import me.sknz.simpleblog.domain.event.OrganizationDatabaseEvent
 import me.sknz.simpleblog.domain.model.BlogPost
 import me.sknz.simpleblog.infra.repository.OrganizationRepository
 import me.sknz.simpleblog.infra.repository.PostRepository
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import java.time.OffsetDateTime
 import java.util.*
 
 @Service
@@ -16,8 +14,8 @@ class PostService(
     val member: MemberService,
     val posts: PostRepository,
     val organizations: OrganizationRepository,
-    val emitter: EmitterService
-) {
+    emitter: EmitterService
+): ModelEmitter(emitter) {
 
     fun getPosts(organization: UUID): Flux<BlogPost> {
         return member.isOrganizationMember(organization)
@@ -38,13 +36,6 @@ class PostService(
                 post.userId = it.t1.id
                 post.organizationId = it.t2
                 posts.save(post).zipWith(organizations.findById(it.t2))
-            }.map {
-                emitter.emit(organization, OrganizationDatabaseEvent(
-                    organization = it.t2.name,
-                    type = "posts_create",
-                    payload = it.t1
-                ))
-                return@map it.t1
-            }
+            }.map { it.t1 }.emit(organization)
     }
 }

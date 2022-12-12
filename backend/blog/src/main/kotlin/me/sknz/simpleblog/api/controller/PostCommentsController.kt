@@ -30,11 +30,11 @@ class PostCommentsController(
         return comments.getPostCommentById(organization, post, comment)
     }
 
-    @PostMapping
+    @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun createPostComment(@PathVariable organization: UUID,
-                       @PathVariable post: UUID,
-                       @RequestBody comment: CommentDTO): Mono<PostComment> {
+                          @PathVariable post: UUID,
+                          @RequestBody comment: CommentDTO): Mono<PostComment> {
         return comments.createPostComment(organization, post, comment)
     }
 
@@ -48,8 +48,8 @@ class PostCommentsController(
 
     @DeleteMapping(path = ["/{comment}/likes"], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun dislikeTheComment(@PathVariable organization: UUID,
-                       @PathVariable post: UUID,
-                       @PathVariable comment: UUID) : Mono<Void> {
+                          @PathVariable post: UUID,
+                          @PathVariable comment: UUID) : Mono<Void> {
         return comments.dislikeTheComment(organization, post, comment)
     }
 }

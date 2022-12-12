@@ -4,6 +4,7 @@ import me.sknz.simpleblog.domain.dto.CommentDTO
 import me.sknz.simpleblog.domain.model.BlogPost
 import me.sknz.simpleblog.domain.model.CommentLike
 import me.sknz.simpleblog.domain.model.PostComment
+import me.sknz.simpleblog.domain.utils.EventType
 import me.sknz.simpleblog.infra.repository.CommentLikeRepository
 import me.sknz.simpleblog.infra.repository.PostCommentRepository
 import org.springframework.http.HttpStatus
@@ -22,7 +23,7 @@ class PostCommentsService(
     val posts: PostService,
     val comments: PostCommentRepository,
     val likes: CommentLikeRepository,
-) {
+): ModelEmitter(posts.emitter) {
 
     fun getPostComments(organization: UUID, post: UUID): Flux<PostComment> {
         return getPost(organization, post).flatMapMany { comments.findByPostId(it.id) }
@@ -46,7 +47,7 @@ class PostCommentsService(
             }.flatMap { tuple ->
                 tuple.t2.comments.add(tuple.t1.id)
                 posts.posts.save(tuple.t2).then(Mono.just(tuple.t1))
-            }
+            }.emit(organization)
     }
 
     fun likeTheComment(organization: UUID, postId: UUID, commentId: UUID): Mono<CommentLike> {
@@ -64,7 +65,7 @@ class PostCommentsService(
                 like.updatedAt = OffsetDateTime.now(ZoneOffset.UTC)
                 tuple.t1.likes.add(like.id)
                 comments.save(tuple.t1).then(likes.save(like))
-            }
+            }.emit(organization)
     }
 
     fun dislikeTheComment(organization: UUID, postId: UUID, commentId: UUID): Mono<Void> {
@@ -76,8 +77,8 @@ class PostCommentsService(
                 Mono.error(ResponseStatusException(HttpStatus.CONFLICT, "Você não tem curtidas nesse comentário"))
             }.flatMap { tuple ->
                 tuple.t2.likes.removeIf { it == tuple.t1.id }
-                likes.delete(tuple.t1).then(comments.save(tuple.t2))
-            }.then()
+                likes.delete(tuple.t1).then(comments.save(tuple.t2)).then(Mono.just(tuple.t1))
+            }.emit(organization, EventType.DELETED).then()
     }
 
     private fun getPost(organization: UUID, postId: UUID): Mono<BlogPost> {
