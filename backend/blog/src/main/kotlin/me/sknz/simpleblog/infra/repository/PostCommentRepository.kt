@@ -12,9 +12,8 @@ interface PostCommentRepository: ReactiveMongoRepository<PostComment, UUID> {
 
     fun findByPostId(postId: UUID): Flux<PostComment>
     fun findByPostIdAndId(postId: UUID, id: UUID): Mono<PostComment>
-    fun findByPostId(idStream: Publisher<UUID>): Flux<PostComment>
+
     fun findAllByIdAndCreatedAtAfter(idStream: Publisher<UUID>, createdAt: OffsetDateTime): Flux<PostComment>
-    fun findByPostIdAndCreatedAtAfter(idStream: Publisher<UUID>, createdAt: OffsetDateTime): Flux<PostComment>
-    fun findByPostIdAndUpdatedAtAfter(idStream: Publisher<UUID>, updatedAt: OffsetDateTime): Flux<PostComment>
+    fun findAllByIdAndUpdatedAtAfter(idStream: Publisher<UUID>, createdAt: OffsetDateTime): Flux<PostComment>
 
 }

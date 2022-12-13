@@ -24,6 +24,7 @@ class PostCommentsController(
     }
 
     @GetMapping(path = ["/{comment}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.OK)
     fun getPostComment(@PathVariable organization: UUID,
                        @PathVariable post: UUID,
                        @PathVariable comment: UUID) : Mono<PostComment> {
@@ -47,6 +48,7 @@ class PostCommentsController(
     }
 
     @DeleteMapping(path = ["/{comment}/likes"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun dislikeTheComment(@PathVariable organization: UUID,
                           @PathVariable post: UUID,
                           @PathVariable comment: UUID) : Mono<Void> {

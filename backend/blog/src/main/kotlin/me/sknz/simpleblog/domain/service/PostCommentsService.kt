@@ -13,34 +13,48 @@ import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
+import reactor.util.function.Tuple2
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.*
 
 @Service
 class PostCommentsService(
-    val member: MemberService,
     val posts: PostService,
     val comments: PostCommentRepository,
     val likes: CommentLikeRepository,
 ): ModelEmitter(posts.emitter) {
+
+    val members = posts.organizations.members
 
     fun getPostComments(organization: UUID, post: UUID): Flux<PostComment> {
         return getPost(organization, post).flatMapMany { comments.findByPostId(it.id) }
     }
 
     fun getPostCommentById(organization: UUID, postId: UUID, comment: UUID): Mono<PostComment> {
+        return getPostCommentByIdWithPost(organization, postId, comment).map { it.t1 }
+    }
+
+    fun getPostCommentByIdWithPost(organization: UUID, postId: UUID, comment: UUID): Mono<Tuple2<PostComment, BlogPost>> {
         return getPost(organization, postId).flatMap { post ->
             comments.findByPostIdAndId(post.id, comment).filter { comment ->
                 post.comments.any { comment.id == it }
-            }
-        }.switchIfEmpty {
-            Mono.error(ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado nenhum comentário com este id"))
+            }.switchIfEmpty {
+                Mono.error(ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi encontrado nenhum comentário com este id"))
+            }.zipWith(Mono.just(post))
         }
     }
 
+    fun deletePostComment(organization: UUID, postId: UUID, comment: UUID): Mono<Void> {
+        return getPostCommentByIdWithPost(organization, postId, comment)
+            .map { tuple ->
+                tuple.t2.comments.remove(tuple.t1.id)
+                posts.posts.save(tuple.t2).then(comments.delete(tuple.t1))
+            }.then()
+    }
+
     fun createPostComment(organization: UUID, postId: UUID, comment: CommentDTO): Mono<PostComment> {
-        return getPost(organization, postId).zipWith(member.getBlogUserDetails())
+        return getPost(organization, postId).zipWith(members.getBlogUserDetails())
             .flatMap { tuple ->
                 comments.save(comment.toPostComment(tuple.t1.id, tuple.t2.id))
                     .zipWith(Mono.just(tuple.t1))
@@ -52,7 +66,7 @@ class PostCommentsService(
 
     fun likeTheComment(organization: UUID, postId: UUID, commentId: UUID): Mono<CommentLike> {
         return getPostCommentById(organization, postId, commentId)
-            .zipWith(member.getBlogUserDetails())
+            .zipWith(members.getBlogUserDetails())
             .filterWhen { tuple -> likes.existsByCommentIdAndUserId(tuple.t1.id, tuple.t2.id).map { !it } }
             .switchIfEmpty {
                 Mono.error(ResponseStatusException(HttpStatus.CONFLICT, "Você já curtiu este comentário"))
@@ -70,7 +84,7 @@ class PostCommentsService(
 
     fun dislikeTheComment(organization: UUID, postId: UUID, commentId: UUID): Mono<Void> {
         return getPostCommentById(organization, postId, commentId)
-            .zipWith(member.getBlogUserDetails())
+            .zipWith(members.getBlogUserDetails())
             .flatMap { tuple ->
                 likes.findByCommentIdAndUserId(tuple.t1.id, tuple.t2.id).zipWith(Mono.just(tuple.t1))
             }.switchIfEmpty {
