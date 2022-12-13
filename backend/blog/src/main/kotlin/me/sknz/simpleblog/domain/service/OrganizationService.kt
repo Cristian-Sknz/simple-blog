@@ -10,8 +10,8 @@ import java.util.*
 
 @Service
 class OrganizationService(
-    private val members: MemberService,
-    private val organizations: OrganizationRepository
+    val members: MemberService,
+    val organizations: OrganizationRepository
 ) {
 
     fun getOrganization(organization: UUID): Mono<Organization> {

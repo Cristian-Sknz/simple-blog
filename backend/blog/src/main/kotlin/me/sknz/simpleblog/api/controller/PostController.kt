@@ -2,6 +2,7 @@ package me.sknz.simpleblog.api.controller
 
 import me.sknz.simpleblog.domain.dto.PostDTO
 import me.sknz.simpleblog.domain.model.BlogPost
+import me.sknz.simpleblog.domain.model.PostLike
 import me.sknz.simpleblog.domain.service.PostService
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -17,11 +18,13 @@ class PostController(
 ) {
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.OK)
     fun getOrganizationPosts(@PathVariable organization: UUID): Flux<BlogPost> {
         return posts.getPosts(organization)
     }
 
     @GetMapping(path = ["/{post}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.OK)
     fun getOrganizationPost(@PathVariable organization: UUID,
                             @PathVariable post: UUID): Mono<BlogPost> {
         return posts.getPost(organization, post)
@@ -32,5 +35,26 @@ class PostController(
     fun createNewPost(@PathVariable organization: UUID,
                       @RequestBody post: PostDTO): Mono<BlogPost> {
         return posts.create(organization, post)
+    }
+
+    @DeleteMapping(path = ["/{post}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteMyPost(@PathVariable organization: UUID,
+                     @PathVariable post: UUID): Mono<Void> {
+        TODO("Desativado por enquanto...") //return posts.delete(organization, post)
+    }
+
+    @PostMapping(path = ["/{post}/likes"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.CREATED)
+    fun likeThePost(@PathVariable organization: UUID,
+                       @PathVariable post: UUID) : Mono<PostLike> {
+        return posts.likeThePost(organization, post)
+    }
+
+    @DeleteMapping(path = ["/{post}/likes"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun dislikeThePost(@PathVariable organization: UUID,
+                          @PathVariable post: UUID) : Mono<Void> {
+        return posts.dislikeThePost(organization, post)
     }
 }

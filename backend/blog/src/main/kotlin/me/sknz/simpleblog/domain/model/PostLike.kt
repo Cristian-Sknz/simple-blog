@@ -25,6 +25,16 @@ class PostLike : Model<UUID> {
     override fun getTable() = table
 
     companion object {
+        fun from(post: UUID, user: UUID): PostLike {
+            val like = PostLike()
+            like.postId = post
+            like.userId = user
+            like.id = UUID.randomUUID()
+            like.createdAt = OffsetDateTime.now()
+            like.updatedAt = OffsetDateTime.now()
+            return like
+        }
+
         const val table = "post_likes"
     }
 }
