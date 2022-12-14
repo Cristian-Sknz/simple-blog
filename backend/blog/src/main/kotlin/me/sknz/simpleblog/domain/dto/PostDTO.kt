@@ -1,6 +1,7 @@
 package me.sknz.simpleblog.domain.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.constraints.NotBlank
 import me.sknz.simpleblog.domain.model.BlogPost
 import java.time.OffsetDateTime
 import java.util.*
@@ -8,8 +9,11 @@ import java.util.*
 class PostDTO {
 
     var id : UUID? = null
+
+    @NotBlank
     lateinit var title: String
     var subtitle: String? = null
+    @NotBlank
     lateinit var content: String
 
     @JsonProperty("user_id")

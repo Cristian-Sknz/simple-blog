@@ -23,7 +23,7 @@ class BlogUserDetailsService(
 
     private fun UserRepository.findByUsernameOrEmail(usernameOrEmail: String): Mono<BlogUser> {
         if (usernameOrEmail.contains('@')) {
-            this.findByEmail(usernameOrEmail)
+            return this.findByEmail(usernameOrEmail)
         }
         return this.findByUsername(usernameOrEmail)
     }

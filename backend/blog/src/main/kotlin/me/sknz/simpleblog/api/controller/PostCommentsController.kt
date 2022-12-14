@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.api.controller
 
+import jakarta.validation.Valid
 import me.sknz.simpleblog.domain.dto.CommentDTO
 import me.sknz.simpleblog.domain.model.CommentLike
 import me.sknz.simpleblog.domain.model.PostComment
@@ -35,7 +36,7 @@ class PostCommentsController(
     @ResponseStatus(HttpStatus.CREATED)
     fun createPostComment(@PathVariable organization: UUID,
                           @PathVariable post: UUID,
-                          @RequestBody comment: CommentDTO): Mono<PostComment> {
+                          @RequestBody @Valid comment: CommentDTO): Mono<PostComment> {
         return comments.createPostComment(organization, post, comment)
     }
 

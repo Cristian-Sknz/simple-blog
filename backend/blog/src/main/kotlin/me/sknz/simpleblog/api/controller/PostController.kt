@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.api.controller
 
+import jakarta.validation.Valid
 import me.sknz.simpleblog.domain.dto.PostDTO
 import me.sknz.simpleblog.domain.model.BlogPost
 import me.sknz.simpleblog.domain.model.PostLike
@@ -33,7 +34,7 @@ class PostController(
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun createNewPost(@PathVariable organization: UUID,
-                      @RequestBody post: PostDTO): Mono<BlogPost> {
+                      @RequestBody @Valid post: PostDTO): Mono<BlogPost> {
         return posts.create(organization, post)
     }
 

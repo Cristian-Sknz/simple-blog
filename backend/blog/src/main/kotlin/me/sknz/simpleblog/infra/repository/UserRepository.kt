@@ -11,6 +11,12 @@ interface UserRepository : ReactiveMongoRepository<BlogUser, UUID> {
 
     fun findByEmail(email: String): Mono<BlogUser>
     fun findByUsername(username: String): Mono<BlogUser>
+    
+
+    fun existsByEmail(email: String): Mono<Boolean>
+    fun existsByUsername(username: String): Mono<Boolean>
+
+
     fun findByOrganizationsContains(organizationId: UUID): Flux<BlogUser>
     fun findByOrganizationsContainsAndCreatedAtAfter(organizationId: Any, createdAt: OffsetDateTime): Flux<BlogUser>
     fun findByOrganizationsContainsAndUpdatedAtAfter(organizationId: Any, createdAt: OffsetDateTime): Flux<BlogUser>

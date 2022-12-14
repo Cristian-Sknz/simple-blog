@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -15,6 +16,7 @@ class BlogUser: Model<UUID>{
     lateinit var name: String
     lateinit var username: String
     lateinit var email: String
+    @JsonIgnore
     lateinit var password: String
 
     var image: String? = null
