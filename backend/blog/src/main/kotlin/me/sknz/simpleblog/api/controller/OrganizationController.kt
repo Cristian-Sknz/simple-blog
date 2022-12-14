@@ -32,7 +32,7 @@ class OrganizationController(
         return organizations.getOrganizations()
     }
 
-    @GetMapping
+    @GetMapping(path = ["/public"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getPublicOrganizations(): Flux<Organization> {
         return organizations.getPublicOrganizations()
@@ -50,13 +50,13 @@ class OrganizationController(
         return organizations.getOrganization(organization)
     }
 
-    @GetMapping(path = ["/{organization}/join"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(path = ["/{organization}/join"])
     @ResponseStatus(HttpStatus.OK)
     fun joinPublicOrganization(organization: UUID): Mono<Void> {
         return invites.joinPublicOrganization(organization)
     }
 
-    @PostMapping(path = ["/{organization}/leave"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(path = ["/{organization}/leave"])
     @ResponseStatus(HttpStatus.OK)
     fun leaveFromOrganization(@PathVariable organization: UUID): Mono<Void> {
         return invites.leaveOrganization(organization)
@@ -76,7 +76,7 @@ class OrganizationController(
         return invites.createInvite(organization)
     }
 
-    @DeleteMapping(path = ["/{organization}/invite/{invite}"], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @DeleteMapping(path = ["/{organization}/invite/{invite}"])
     @ResponseStatus(HttpStatus.OK)
     fun removeInvite(@PathVariable organization: UUID,
                      @PathVariable invite: UUID): Mono<Void> {
