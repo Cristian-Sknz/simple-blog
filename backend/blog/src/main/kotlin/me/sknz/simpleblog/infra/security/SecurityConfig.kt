@@ -15,6 +15,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 import org.springframework.security.web.server.authentication.ServerFormLoginAuthenticationConverter
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsWebFilter
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import reactor.core.publisher.Mono
 
 @Configuration
@@ -26,13 +29,11 @@ class SecurityConfig {
     fun securityWebFilterChain(http: ServerHttpSecurity, userDetailsService: BlogUserDetailsService, provider: JWTProvider): SecurityWebFilterChain {
         return http.cors().and().authorizeExchange()
                     .pathMatchers(HttpMethod.POST, "/auth/signup").permitAll()
-                    // Permitir os métodos OPTIONS, pois a autenticação acaba bloqueando o Preflight
-                    .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .anyExchange()
                     .authenticated().and()
+            .addFilterAt(corsWebFilter(), SecurityWebFiltersOrder.CORS)
             .addFilterAt(basicAuthenticationFilter(userDetailsService, provider), SecurityWebFiltersOrder.HTTP_BASIC)
                 .csrf().disable()
-
                 .addFilterAt(bearerAuthenticationFilter(provider), SecurityWebFiltersOrder.AUTHENTICATION)
             .build()
     }
@@ -45,7 +46,7 @@ class SecurityConfig {
         return AuthenticationWebFilter(repository).let {
             it.setAuthenticationSuccessHandler(authenticationHandler)
             it.setAuthenticationFailureHandler(authenticationHandler)
-            it.setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, "/auth/login"))
+            it.setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, "/auth/login", "/auth/signin"))
             it.setServerAuthenticationConverter(ServerFormLoginAuthenticationConverter())
             return@let it
         }
@@ -57,6 +58,18 @@ class SecurityConfig {
             it.setRequiresAuthenticationMatcher(ServerWebExchangeMatchers.pathMatchers("/api/**"))
             return@let it
         }
+    }
+
+    fun corsWebFilter(): CorsWebFilter {
+        val configuration = CorsConfiguration()
+        val source = UrlBasedCorsConfigurationSource()
+        configuration.allowCredentials = true
+        configuration.addAllowedHeader("*")
+        configuration.addAllowedMethod("*")
+        configuration.allowedOriginPatterns = listOf("*")
+        configuration.maxAge = 3600L
+        source.registerCorsConfiguration("/**", configuration)
+        return CorsWebFilter(source)
     }
 
     @Bean
