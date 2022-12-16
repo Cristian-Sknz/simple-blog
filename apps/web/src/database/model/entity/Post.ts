@@ -5,7 +5,6 @@ import { Tables } from './Tables';
 import Comment from './Comment';
 import PostLike from './PostLike';
 import BlogUser from './User';
-import LoggedUser from './LoggedUser';
 
 class Post extends Model {
   static table: string = Tables.Post;
@@ -36,7 +35,12 @@ class Post extends Model {
   @children(Tables.PostLike) likes: Query<PostLike>;
 
   @writer async addComment(content: string) {
-    const user = await (await this.collections.get<LoggedUser>(LoggedUser.table).query().fetch())[0].user.fetch();
+    const logged = localStorage.getItem('logged_user')
+    if (!logged) {
+      throw 'Usuário logado não foi encontrado'
+    }
+
+    const user = await this.collections.get<BlogUser>(BlogUser.table).find(logged);
     await this.comments.collection.create(comment => {
       comment.content = content;
       comment.user.set(user);
@@ -45,8 +49,13 @@ class Post extends Model {
   }
 
   @writer async pushLike() {
-    const user = await (await this.collections.get<LoggedUser>(LoggedUser.table).query().fetch())[0].user.fetch();
-    const userLike = await this.likes.extend(Q.where('user_id', user!!.id)).fetch();
+    const logged = localStorage.getItem('logged_user')
+    if (!logged) {
+      throw 'Usuário logado não foi encontrado'
+    }
+    
+    const user = await this.collections.get<BlogUser>(BlogUser.table).find(logged);
+    const userLike = await this.likes.extend(Q.where('user_id', user.id)).fetch();
     if (userLike[0]) {
       await userLike[0].markAsDeleted();
       return;

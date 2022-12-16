@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Observable } from 'rxjs'
 
-export function useEffectState<T>(init:() => Promise<T>) {
+export function useEffectState<T>(init?:() => Promise<T>) {
   const [state, setState] = useState<T | null>(null);
 
   useEffect(() => {
     async function fetch() {
+      if (init == null) return
       setState(await init());
     }
     fetch();

@@ -1,15 +1,15 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { Cookies, useCookies } from 'react-cookie';
 import { BlogUser, database } from '@/database';
-import LoggedUser from '@/database/model/entity/LoggedUser';
 import { useConnection } from './ConnectionContext';
-import moment from 'moment';
 import * as UseSelector from 'use-context-selector';
+import { authenticatedFetch, backendFetch } from '@/libs/fetch';
+import SyncProvider from './SyncContext';
 
 export type SignInData = {
-  user: string;
+  username: string;
   password: string;
-}
+};
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -29,30 +29,26 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     async function fetch() {
-      const logged = await database.get<LoggedUser>(LoggedUser.table).query().fetch();
+      const logged = localStorage.getItem('logged_user')
+
       if (isOffline) {
-        if (logged.length === 0) {
+        if (!logged) {
           setAuthenticated(false);
           return null;
         }
-        const user = await logged[0].user.observe();
+        const user = await database.get<BlogUser>(BlogUser.table).findAndObserve(logged);
         const subscription = user.subscribe((user) => setUser(user!!));
         setAuthenticated(true);
         return subscription;
       }
 
-      if (cookies['app-token']) {
-        const user = await logged[0].user.observe();
+      if (cookies['app-token'] && logged) {
+        const user = await database.get<BlogUser>(BlogUser.table).findAndObserve(logged);
         const subscription = user.subscribe((user) => setUser(user!!));
         setAuthenticated(true);
         return subscription;
       }
 
-      if (logged.length !== 0) {
-        database.write(async () => {
-          await logged[0].destroyPermanently()
-        });
-      }
       setAuthenticated(false);
       return null;
     }
@@ -60,57 +56,56 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const subscription = fetch();
     return () => {
       subscription.then((subscription) => subscription?.unsubscribe());
-    }
+    };
   }, [cookies, isOffline]);
 
-
   const signIn = useCallback(async (data: SignInData) => {
-    try {
-      const request = null || {
-        data: {
-          login: {
-            accessToken: 'debug-token',
-            expires: moment().add(2, 'hours').diff(moment())
-          }
-        }
-      };
+    const response = await backendFetch('/auth/login', {
+      method: 'POST',
+      body: new URLSearchParams({
+        username: data.username,
+        password: data.password,
+      }),
+    });
 
-      const { login: { expires, accessToken } } = request.data;
-      var maxAge = expires/1000;
-
-      await database.write(async () => {
-        await database.unsafeResetDatabase();
-        const user = await database.get<BlogUser>(BlogUser.table).create((user) => {
-          user.name = 'Cristian Ferreira';
-          user.username = 'cristian_sknz';
-          user.email = 'cristian.datingaa@gmail.com';
-        });
-
-        await database.get<LoggedUser>(LoggedUser.table).create(logged => {
-          logged.user.set(user);
-        })
-      });
-
-      setCookies('app-token', accessToken, { maxAge });
-      setAuthenticated(true);
-    } catch (e: any) {
-      console.log(e)
+    if (response.status != 200) {
       throw 'Endereço de email ou senha estão incorretos.';
     }
+
+    const { expires: maxAge, token } = await response.json();
+    setCookies('app-token', token, { maxAge });
+
+    const { id, name, username, email } = await (await authenticatedFetch('/me')).json();
+    
+    await database.write(async () => {
+      await database.unsafeResetDatabase();
+      const user = await database.get<BlogUser>(BlogUser.table).create((user) => {
+        user._raw.id = id
+        user.name = name;
+        user.username = username;
+        user.email = email;
+      });
+      
+      setUser(user)
+    });
+    localStorage.setItem('logged_user', id)
+    setAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
     removeCookies('app-token');
     setAuthenticated(false);
     database.write(async () => {
-      await database.get<BlogUser>(BlogUser.table).query().destroyAllPermanently()
+      await database.get<BlogUser>(BlogUser.table)
+        .query()
+        .destroyAllPermanently();
     });
   }, []);
 
   const flush = useCallback(async () => {
     if (isOffline) {
-      const logged = await database.get<LoggedUser>(LoggedUser.table).query().fetch();
-      if (logged.length === 0) {
+      const logged = localStorage.getItem('logged_user')
+      if (!logged) {
         setAuthenticated(false);
         return;
       }
@@ -120,24 +115,31 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const cookies = new Cookies();
     if (cookies.get('app-token')) {
-      if  (!isAuthenticated) setAuthenticated(true);
+      if (!isAuthenticated) setAuthenticated(true);
       return;
     }
     setAuthenticated(false);
   }, [isAuthenticated, isOffline]);
 
-  return <AuthContext.Provider value={{
-    isAuthenticated,
-    signIn,
-    logout,
-    user,
-    flush
-  }}>
-    {children}
-  </AuthContext.Provider>
-}
+  return (
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        signIn,
+        logout,
+        user,
+        flush,
+      }}
+    >
+      <SyncProvider isAuthenticated={isAuthenticated}>
+        {children}
+      </SyncProvider>
+    </AuthContext.Provider>
+  );
+};
 
 export { AuthContext };
-export const useUser = () => UseSelector.useContextSelector(AuthContext, (value) => value.user);
+export const useUser = () =>
+  UseSelector.useContextSelector(AuthContext, (value) => value.user);
 export const useAuth = () => UseSelector.useContext(AuthContext);
 export default AuthProvider;

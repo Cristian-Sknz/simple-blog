@@ -6,7 +6,6 @@ import { Tables } from './Tables';
 import Post from './Post';
 import BlogUser from './User';
 import CommentLike from './CommentLike';
-import LoggedUser from './LoggedUser';
 
 class Comment extends Model {
   static table: string = Tables.Comment;
@@ -36,8 +35,13 @@ class Comment extends Model {
 
 
   @writer async pushLike() {
-    const user = await (await this.collections.get<LoggedUser>(LoggedUser.table).query().fetch())[0].user.fetch();
-    const userLike = await this.likes.extend(Q.where('user_id', user!!.id)).fetch();
+    const logged = localStorage.getItem('logged_user')
+    if (!logged) {
+      throw 'Usuário logado não foi encontrado'
+    }
+    
+    const user = await this.collections.get<BlogUser>(BlogUser.table).find(logged);
+    const userLike = await this.likes.extend(Q.where('user_id', user.id)).fetch();
     if (userLike[0]) {
       await userLike[0].markAsDeleted();
       return;

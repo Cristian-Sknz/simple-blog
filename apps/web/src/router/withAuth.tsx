@@ -1,37 +1,61 @@
-import { useCallback, useEffect } from 'react';
-import { Navigate, To, useLocation } from 'react-router-dom';
-import { AuthContext, useAuth as useAuthContext } from '@contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
+import { AuthContext } from '@contexts/AuthContext';
 import { useContextSelector } from 'use-context-selector';
+import { useSyncContext } from '@contexts/SyncContext';
+
 export enum AccessType {
   ALL = 'ALL',
   Anonymous = 'Anonymous',
   Authenticated = 'Authenticated',
+  NEED_ORGANIZATION = "Need Organization"
 }
 
-type WithAuthFunction = (acess: AccessType, element: JSX.Element, to?: To) => JSX.Element;
+interface RouteElementProps {
+  /**
+   * Se é uma rota que precisa estar autenticado.
+   * 
+   * @default true
+   */
+  access?: AccessType;
 
-export function useAuth() {
+  /**
+   * Especificar qual rota ele será redirecionado caso não estiver autenticado.
+   * 
+   * @default '/'
+   */
+  redirect?: string
+  children: React.ReactNode
+}
+
+const RouteElement: React.FC<RouteElementProps> = (props) => {
+  const { isLoading, organization } = useSyncContext()
   const isAuthenticated = useContextSelector(AuthContext, (value) => value.isAuthenticated);
-  const flush = useContextSelector(AuthContext, (value) => value.flush);
-  const location = useLocation();
-  //const isAuthenticated = true;
 
-  useEffect(() => {
-    flush();
-  }, [flush, location]);
-
-  const withAuth: WithAuthFunction = useCallback((access, element, to) => {
-    switch (access) {
-      case AccessType.ALL: {
-        return element;
-      }
-      case AccessType.Anonymous: {
-        return (isAuthenticated) ? <Navigate to={to || '/app'}/> : element;
-      }
-      case AccessType.Authenticated: {
-        return (isAuthenticated) ? element : <Navigate to={to || '/'}/>
-      }
+  switch(props.access || AccessType.ALL) {
+    case AccessType.Anonymous: {
+      if (isAuthenticated) return <Navigate to={props.redirect || '/'}/>
+      break
     }
-  }, [isAuthenticated]);
-  return { withAuth };
+    case AccessType.Authenticated: {
+      if (isAuthenticated) break;
+      return <Navigate to={props.redirect || '/'}/>
+    }
+    case AccessType.NEED_ORGANIZATION: {
+      if (!isAuthenticated) {
+        return <Navigate to={props.redirect || '/'}/>
+      }
+
+      if (!organization && !isLoading) {
+        return <Navigate to={props.redirect || '/app/organizations'}/>
+      }
+      break
+    }
+    case AccessType.ALL: {
+      break
+    }
+  }
+
+  return <>{props.children}</>
 }
+
+export default RouteElement;

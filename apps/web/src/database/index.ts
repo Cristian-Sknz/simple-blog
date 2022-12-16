@@ -7,7 +7,6 @@ import {
   BlogUserSchema,
   PostLikeSchema,
   CommentLikeSchema,
-  LoggedUserSchema,
 } from './model/entity';
 
 import {
@@ -16,7 +15,6 @@ import {
   BlogUser,
   PostLike,
   CommentLike,
-  LoggedUser,
 } from './model/entity';
 
 import { v4 } from 'uuid'
@@ -31,7 +29,6 @@ const adapter = new LokiJSAdapter({
       CommentSchema,
       BlogUserSchema,
       PostLikeSchema,
-      LoggedUserSchema,
       CommentLikeSchema,
     ],
     version: 1,
@@ -42,7 +39,7 @@ const adapter = new LokiJSAdapter({
 
 export const database = new Database({
   adapter,
-  modelClasses: [Post, Comment, BlogUser, PostLike, LoggedUser, CommentLike],
+  modelClasses: [Post, Comment, BlogUser, PostLike, CommentLike],
 });
 
 export * from './model/entity';

@@ -25,14 +25,16 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 const schema = yup.object({
-  user: yup.string()
-    .test('email', 'Insira um email valido!', (value) => {
-      return !!(value || '').indexOf('@') && !yup.string().email("insira um email valido").isValidSync(value)
-    })
-    .test('username', 'Insira um username valido!', (value) => {
-      return yup.string().matches(/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/).isValidSync(value)
-    })
-    .required('Preencha um email ou nome de usuario'),
+  username: yup.string()
+  .test('user', "Preencher o username/email corretamente!", (value) => (
+    yup.string()
+      .matches(/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/)
+      .isValidSync(value) || 
+    yup.string()
+      .email()
+      .isValidSync(value)
+    )
+  ).required("Preencha o username/email corretamente"),
   password: yup.string()
     .min(8, 'Você precisa inserir uma senha de 8 caracteres')
     .required('Preencha o campo e senha')
@@ -40,10 +42,10 @@ const schema = yup.object({
 
 
 const LoginScreen: React.FC<any> = () => {
-  const [loading, setLoading] = useState<boolean>(false);
   const { register, formState: { errors }, handleSubmit } = useForm<SignInData>({
     resolver: yupResolver(schema)
   });
+  const [loading, setLoading] = useState<boolean>(false);
   const { signIn } = useAuth();
 
   return (
@@ -69,7 +71,7 @@ const LoginScreen: React.FC<any> = () => {
             <InputLeftAddon>
               <FontAwesomeIcon icon={faUser}/>
             </InputLeftAddon>
-            <Input {...register('user')} placeholder='Insira o Usuario/Email'/>
+            <Input {...register('username')} placeholder='Insira o Usuario/Email'/>
           </InputGroup>
           <InputGroup>
             <InputLeftAddon>
@@ -77,7 +79,7 @@ const LoginScreen: React.FC<any> = () => {
             </InputLeftAddon>
             <Input {...register('password')} placeholder='Senha' type={'password'}/>
           </InputGroup>
-          <Text>{(errors['user'] || errors['password'])?.message || 'sem errors'}</Text>
+          <Text>{(errors['username'] || errors['password'])?.message || 'sem errors'}</Text>
 
           <Button onClick={handleSubmit(signIn)} w={'full'} colorScheme={'green'} type={'submit'}>
             Entrar
