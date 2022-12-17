@@ -1,23 +1,63 @@
-import { Button, Heading, Input, InputGroup, List, ListItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, ModalProps, VStack } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { v4 } from 'uuid';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import useMutation from 'swr/mutation';
+import { handleError } from '@/libs/fetch';
+import {
+  Button,
+  FormLabel,
+  Heading,
+  Input,
+  InputGroup,
+  List,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  ModalProps,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 
 interface InviteOrganizationProps extends Omit<ModalProps, 'children'> {
-  onJoinPress?(invite: string): Promise<boolean>
+  onOrganizationJoin?(invite: string): void
+  poster: (value: `/invites/${string}/join`) => any
 }
 
+const InviteURL = `${window.location.protocol}//${window.location.host}/invite/`
+
+const schema = yup.object({
+  invite: yup.string()
+    .transform((value: string) => value.startsWith(InviteURL) ? value.substring(InviteURL.length) : value)
+    .uuid("Preencha um convite valido!")
+    .required()
+})
+
 const InviteOrganization: React.FC<InviteOrganizationProps> = (props) => {
-  const [invite, setInvite] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const uuid = useMemo(() => v4(), [])
+  const { register, reset, handleSubmit, ...form } = useForm({
+    resolver: yupResolver(schema)
+  })
+  const mutation = useMutation('/invites', (path, args) => {
+    return props.poster(`${path}/${args['arg']}/join` as any)
+  });
+
+  const uuid = useMemo(() => v4(), [props.isOpen])
+  const error = mutation.error ? handleError(mutation.error, {}) : form.formState.errors?.invite
 
   useEffect(() => {
-    setInvite('');
+    reset()
+    mutation.reset()
   }, [props.isOpen])
 
   return (
     <Modal size={{ base: 'auto', sm: 'md' }} isCentered {...props} 
-      isOpen={loading ? loading : props.isOpen}
+      isOpen={mutation.isMutating ? mutation.isMutating : props.isOpen}
     >
       <ModalOverlay/>
       <ModalContent
@@ -36,18 +76,25 @@ const InviteOrganization: React.FC<InviteOrganizationProps> = (props) => {
           textAlign={'center'}
         >
           <Heading size={'md'}>Entrar em um Organização</Heading>
-          <Heading fontWeight={'light'} size={'xs'} my={2} maxW={'300px'}>
+          <Heading fontWeight={'light'} size={'xs'} mt={2} maxW={'300px'}>
             Insira um convite abaixo para entrar em uma organização existente
           </Heading>
           <ModalCloseButton/>
         </ModalHeader>
         <ModalBody display={'flex'} flexDir={'column'} gap={2} alignItems={'stretch'}>
+          <FormLabel htmlFor={'invite'} display={'inline-block'} fontSize={'sm'} color={error ? 'red.600' :'white'} fontWeight={'bold'}>
+            Insira o convite:
+            <Text ml={1} fontWeight={'light'} display={'inline-block'} fontSize={error ? 'xs' : 'sm'} color={'red.600'}>
+              <>{error ? error : '*'}</>
+            </Text>
+          </FormLabel>
           <InputGroup>
             <Input 
               color={'white'} 
-              placeholder={`http://simpleblog.com/${uuid}`}
-              onChange={event => setInvite(event.currentTarget.value)}
-              value={invite}
+              placeholder={InviteURL + uuid}
+              isInvalid={!!error}
+              id={'invite'}
+              {...register('invite')}
             />
           </InputGroup>
           <VStack alignItems={'stretch'}>
@@ -59,28 +106,23 @@ const InviteOrganization: React.FC<InviteOrganizationProps> = (props) => {
                 {uuid}
               </ListItem>
               <ListItem mt={1} py={'1px'} px={2} rounded={8} display={'inline-block'} bg={'red.800'}>
-                {`http://simpleblog.com/${uuid}`}
+                {InviteURL + uuid}
               </ListItem>
             </List>
           </VStack>
         </ModalBody>
         <ModalFooter justifyContent={'space-between'}>
-          <Button isDisabled={loading} onClick={props.onClose} type='reset' colorScheme={'unstyled'}>
+          <Button isDisabled={mutation.isMutating} onClick={props.onClose} type='reset' colorScheme={'unstyled'}>
             Voltar
           </Button>
-          <Button onClick={props.onJoinPress && (async () => {
-            try {
-              setLoading(true);
-              await props.onJoinPress!!(invite);
-            } catch (err) {
-              console.error(err)
-            } finally {
-              setLoading(false);
-            }
+          <Button onClick={handleSubmit(async ({ invite }) => {
+            mutation.trigger(invite, {
+              onSuccess: () => props.onOrganizationJoin && props.onOrganizationJoin(invite)
+            })
           })} 
             type='submit' 
             colorScheme={'twitter'}
-            isLoading={loading}
+            isLoading={mutation.isMutating}
             loadingText={'Verificando'}
           >
             Entrar
@@ -90,5 +132,10 @@ const InviteOrganization: React.FC<InviteOrganizationProps> = (props) => {
     </Modal>
   );
 };
+
+const messages = {
+  400: 'Você já faz parte desta organização',
+  404: 'Convite invalido ou não existe'
+}
 
 export default InviteOrganization;

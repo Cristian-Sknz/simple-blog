@@ -34,7 +34,7 @@ const AppRoutes: React.FC = () => {
 
         <Route path='app/organizations' element={(
           <RouteElement access={AccessType.Authenticated}>
-            <PageLayout/>
+            <PageLayout _stack={{ userSelect: 'none' }}/>
           </RouteElement>
           )}>
             <Route index element={<SelectOrganization/>}/>

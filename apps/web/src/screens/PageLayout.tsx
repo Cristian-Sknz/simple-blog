@@ -1,4 +1,4 @@
-import { Button, Card, Heading, Hide, HStack, Input, InputGroup, InputLeftAddon, InputRightAddon, List, Stack, VStack } from '@chakra-ui/react';
+import { Button, Card, Heading, Hide, HStack, Input, InputGroup, InputLeftAddon, InputRightAddon, List, Stack, StackProps, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '@components/Sidebar';
@@ -6,11 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import PopularPosts from '@components/PopularPosts';
 
-interface PageLayoutProps {}
+interface PageLayoutProps {
+  _stack?: StackProps;
+}
 
-const PageLayout: React.FC<PageLayoutProps> = () => {
+const PageLayout: React.FC<PageLayoutProps> = (props) => {
   return (
-    <Stack alignItems={'center'} bg={'gray.900'}>
+    <Stack alignItems={'center'} bg={'gray.900'} {...props._stack}>
       <HStack flexDirection={{
         base: 'column-reverse',
         sm: 'row'

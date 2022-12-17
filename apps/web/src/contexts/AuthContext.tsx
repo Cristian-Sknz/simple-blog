@@ -4,7 +4,7 @@ import { BlogUser, database } from '@/database';
 import { useConnection } from './ConnectionContext';
 import * as UseSelector from 'use-context-selector';
 import { authenticatedFetch, backendFetch } from '@/libs/fetch';
-import SyncProvider from './SyncContext';
+import OrganizationProvider from './OrganizationContext';
 
 export type SignInData = {
   username: string;
@@ -131,9 +131,9 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         flush,
       }}
     >
-      <SyncProvider isAuthenticated={isAuthenticated}>
+      <OrganizationProvider isAuthenticated={isAuthenticated}>
         {children}
-      </SyncProvider>
+      </OrganizationProvider>
     </AuthContext.Provider>
   );
 };

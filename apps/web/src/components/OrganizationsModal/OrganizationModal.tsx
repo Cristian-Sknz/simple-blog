@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 interface OrganizationModalProps extends Omit<ModalProps, 'children'> {
   onCreateClick?(): void
   onInviteJoinClick?(): void
-  onExistsClick?(): void
+  onExistentClick?(): void
 }
  
 const OrganizationModal: React.FC<OrganizationModalProps> = (props) => {
@@ -51,7 +51,7 @@ const OrganizationModal: React.FC<OrganizationModalProps> = (props) => {
           </Button>
 
           <Button 
-            onClick={props.onExistsClick}
+            onClick={props.onExistentClick}
             leftIcon={<FontAwesomeIcon icon={faBriefcase} size={'lg'}/>} 
             fontFamily={'Montserrat'} h={'16'} 
             colorScheme={'twitter'} 

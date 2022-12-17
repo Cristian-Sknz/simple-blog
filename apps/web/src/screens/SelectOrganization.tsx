@@ -1,18 +1,14 @@
-import { Avatar, Button, Heading, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Text, useDisclosure, VStack } from '@chakra-ui/react';
+import React, { PropsWithChildren } from 'react';
+import { useDisclosure, VStack } from '@chakra-ui/react';
+
+import { fetcher, poster } from '@/libs/fetch';
+import OrganizationModal, { 
+  CreateOrganization, InviteOrganization, ExistentOrganization 
+} from '@components/OrganizationsModal';
 import Header from '@components/Header';
-import OrganizationModal, { CreateOrganization, InviteOrganization } from '@components/OrganizationsModal';
 import PostInput from '@components/PostInput';
-import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
-import { faBriefcase, faEnvelopeCircleCheck, faSitemap } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-interface SelectOrganizationProps {
-  
-}
- 
-const SelectOrganization: React.FC<SelectOrganizationProps> = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <VStack as={'main'} borderX={'1px solid white'} borderColor={'gray.500'} ml={'0 !important'} alignItems={'stretch'} flex={1}>
       <Header>
@@ -20,11 +16,46 @@ const SelectOrganization: React.FC<SelectOrganizationProps> = () => {
       </Header>
       <PostInput/>
       <VStack m={'0 !important'} top={0} left={0} zIndex={50} position={'absolute'} backdropFilter={'auto'} backdropBlur={'5px'} w={'100vw'} h={'100vh'}>
-        <OrganizationModal onInviteJoinClick={onOpen} onClose={() => null} isOpen />
-        <CreateOrganization onClose={() => null} isOpen/>
-        <InviteOrganization onClose={onClose} isOpen={isOpen} />
+        {children}
       </VStack>
     </VStack>
+  )
+}
+ 
+const SelectOrganization: React.FC = () => {
+  const organizations = useDisclosure({ isOpen: true })
+
+  const create = useDisclosure();
+  const invite = useDisclosure();
+  const existent = useDisclosure();
+
+  return (
+    <Layout>
+      <OrganizationModal
+        onCreateClick={create.onOpen}
+        onInviteJoinClick={invite.onOpen}
+        onExistentClick={existent.onOpen}
+        {...organizations}
+      />
+      <CreateOrganization 
+        poster={poster} 
+        onClose={create.onClose} 
+        isOpen={create.isOpen} 
+        onOrganizationCreate={(created) => console.log(created)}
+      />
+      <InviteOrganization 
+        poster={poster} 
+        onClose={invite.onClose} 
+        isOpen={invite.isOpen} 
+        onOrganizationJoin={(join) => console.log(join)}
+      />
+      <ExistentOrganization 
+        fetcher={fetcher}
+        onClose={existent.onClose} 
+        isOpen={existent.isOpen}
+        onChoiceOrganization={(organization) => console.log(organization)}
+      />
+    </Layout>
   );
 }
  

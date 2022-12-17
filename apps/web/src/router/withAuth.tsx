@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { AuthContext } from '@contexts/AuthContext';
 import { useContextSelector } from 'use-context-selector';
-import { useSyncContext } from '@contexts/SyncContext';
+import { useOrganization } from '@contexts/OrganizationContext';
 
 export enum AccessType {
   ALL = 'ALL',
@@ -28,7 +28,7 @@ interface RouteElementProps {
 }
 
 const RouteElement: React.FC<RouteElementProps> = (props) => {
-  const { isLoading, organization } = useSyncContext()
+  const { isLoading, organization } = useOrganization()
   const isAuthenticated = useContextSelector(AuthContext, (value) => value.isAuthenticated);
 
   switch(props.access || AccessType.ALL) {

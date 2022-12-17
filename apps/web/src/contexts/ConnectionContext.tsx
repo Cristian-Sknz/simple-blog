@@ -7,8 +7,6 @@ type ConnectionContextType = {
   isOffline: boolean;
 };
 
-
-
 const ConnectionContext = UseSelector.createContext<ConnectionContextType>(
   {} as ConnectionContextType
 );

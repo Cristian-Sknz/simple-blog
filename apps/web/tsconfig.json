@@ -9,6 +9,7 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "esModuleInterop": false,
+    "strictFunctionTypes": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
