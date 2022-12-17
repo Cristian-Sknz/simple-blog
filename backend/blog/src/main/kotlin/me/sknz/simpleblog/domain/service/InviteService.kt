@@ -18,7 +18,7 @@ class InviteService(val service: OrganizationService) {
         }.filter { tuple ->
             tuple.t1.members.contains(tuple.t2.id).not()
         }.switchIfEmpty {
-            ResponseStatusException(HttpStatus.NOT_FOUND, "Você já faz parte desta organização!").toMono()
+            ResponseStatusException(HttpStatus.BAD_REQUEST, "Você já faz parte desta organização!").toMono()
         }.flatMap {
             it.t1.members.add(it.t2.id)
             it.t2.organizations.add(it.t1.id)

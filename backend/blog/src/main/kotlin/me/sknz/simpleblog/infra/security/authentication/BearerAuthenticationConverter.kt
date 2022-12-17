@@ -27,7 +27,7 @@ class BearerAuthenticationConverter(
             .map { it.substring(BEARER.length) }
             .map(provider::decode)
             .onErrorResume(JWTVerificationException::class.java) {
-                Mono.error(ResponseStatusException(HttpStatus.BAD_REQUEST, "JWT: ${it.message}", it))
+                Mono.error(ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT: ${it.message}", it))
             }
             .zipWith(Mono.just(exchange.request.headers))
             .map(::usernamePasswordAuthenticationToken)
