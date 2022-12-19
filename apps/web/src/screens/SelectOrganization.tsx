@@ -1,12 +1,15 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import { useDisclosure, VStack } from '@chakra-ui/react';
 
 import { fetcher, poster } from '@/libs/fetch';
+import Header from '@components/Header';
+import PostInput from '@components/PostInput';
+import { useOrganization } from '@contexts/OrganizationContext';
+import { Organization } from '@/database';
+import { Navigate } from 'react-router-dom';
 import OrganizationModal, { 
   CreateOrganization, InviteOrganization, ExistentOrganization 
 } from '@components/OrganizationsModal';
-import Header from '@components/Header';
-import PostInput from '@components/PostInput';
 
 const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -23,11 +26,21 @@ const Layout: React.FC<PropsWithChildren> = ({ children }) => {
 }
  
 const SelectOrganization: React.FC = () => {
+  const { setOrganization, organization } = useOrganization();
   const organizations = useDisclosure({ isOpen: true })
 
   const create = useDisclosure();
   const invite = useDisclosure();
   const existent = useDisclosure();
+
+  const onSelectOrganization = useCallback((value: Organization) => {
+    localStorage.setItem('organization', JSON.stringify(value))
+    setOrganization(value);
+  }, []);
+
+  if (organization) {
+    return <Navigate to={'/app'}/>
+  }
 
   return (
     <Layout>
@@ -53,7 +66,7 @@ const SelectOrganization: React.FC = () => {
         fetcher={fetcher}
         onClose={existent.onClose} 
         isOpen={existent.isOpen}
-        onChoiceOrganization={(organization) => console.log(organization)}
+        onChoiceOrganization={onSelectOrganization}
       />
     </Layout>
   );

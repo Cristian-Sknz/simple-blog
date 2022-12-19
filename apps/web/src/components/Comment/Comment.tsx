@@ -1,12 +1,13 @@
-import { HStack, Image, Text, VStack, StackProps, Tooltip } from '@chakra-ui/react';
+import React from 'react';
 import { faDotCircle, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { Comment as DatabaseComment } from '@/database/model/entity';
 import { snakeCase } from 'lodash';
-import React from 'react';
+import moment from 'moment';
+
 import InteractionButton from '../Post/InteractionButton';
 import { useEffectState, useObserverState } from '@hooks/useEffectState';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import moment from 'moment';
+import { HStack, Text, VStack, StackProps, Tooltip, Avatar } from '@chakra-ui/react';
 
 interface CommentProps {
   _hstack?: StackProps;
@@ -19,13 +20,8 @@ const Comment: React.FC<CommentProps> = (props) => {
   
   return (
     <HStack alignItems={'flex-start'} {...props._hstack}>
-      <HStack>
-        <Image
-          w={12}
-          h={12}
-          rounded={'50%'}
-          src={'https://xsgames.co/randomusers/avatar.php?g=female'}
-        />
+      <HStack userSelect={'none'}>
+        <Avatar name={user?.name} src={user?.image} w={12}/>
       </HStack>
 
       <VStack flex={1} py={2} alignItems={'stretch'}>

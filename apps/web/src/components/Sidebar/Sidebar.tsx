@@ -2,21 +2,14 @@ import React from 'react';
 import Link from '@components/Link';
 import ReactSVG from '@assets/react.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis, faHouse } from '@fortawesome/free-solid-svg-icons';
-import { useUser } from '@contexts/AuthContext';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '@contexts/AuthContext';
 import {
-  Button,
   Hide,
   HStack,
   Image,
   List,
   ListItem,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
   Show,
   Stack,
   Text,
@@ -26,7 +19,8 @@ import UserPopover from './UserPopover';
 
 
 const Sidebar: React.FC = () => {
-  const user = useUser();
+  const { logout, user } = useAuth();
+
   return (
     <VStack
       w={{ base: '100%', sm: 'auto', lg: '20%' }}
@@ -101,7 +95,7 @@ const Sidebar: React.FC = () => {
           </ListItem>
         </List>
       </Stack>
-      <UserPopover user={user}/>
+      <UserPopover onLogoutClick={logout} user={user}/>
     </VStack>
   );
 };

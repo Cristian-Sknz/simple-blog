@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { BlogUser } from '@/database';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import {
+  Avatar,
   Button,
   Hide,
   HStack,
@@ -19,9 +20,10 @@ import {
 
 interface UserPopoverProps {
   user: BlogUser | null;
+  onLogoutClick(): Promise<void> | void;
 }
  
-const UserPopover: React.FC<UserPopoverProps> = ({ user }) => {
+const UserPopover: React.FC<UserPopoverProps> = ({ user, ...rest }) => {
   return (
     <Popover colorScheme={'unstyled'} computePositionOnMount>
     <PopoverTrigger>
@@ -45,12 +47,7 @@ const UserPopover: React.FC<UserPopoverProps> = ({ user }) => {
         }}
       >
         <HStack>
-          <Image
-            src={'https://xsgames.co/randomusers/avatar.php?g=female'}
-            rounded={'50%'}
-            w={9}
-            h={9}
-          />
+          <Avatar userSelect={'none'} name={user?.name} src={user?.image} w={9} h={9}/>
           <Hide below='lg'>
             <VStack alignItems={'flex-start'} lineHeight={1}>
               <Text fontFamily={'Poppins'} fontWeight={500} lineHeight={1} color={'white'}>
@@ -94,6 +91,7 @@ const UserPopover: React.FC<UserPopoverProps> = ({ user }) => {
           justifyContent={'flex-start'} 
           colorScheme={'unstyled'} 
           w={'full'}
+          onClick={rest.onLogoutClick}
         >
           Sair de @{user?.username}
         </Button>

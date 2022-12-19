@@ -49,7 +49,7 @@ const LoginScreen: React.FC<any> = () => {
   const { signIn } = useAuth();
 
   return (
-    <VStack justifyContent={'center'} bg={'gray.600'} w={'100vw'} h={'100vh'}>
+    <VStack justifyContent={'center'} bg={'gray.600'} w={'full'} h={'100vh'}>
       <Card shadow={'md'} minW={'330px'} py={8} bg={'whiteAlpha.900'} width={['80%', 'md']} h={['md']} alignItems={'center'}>
         <HStack>
           <motion.div 

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Button, FormControl, HStack, Image, Input, StackProps, Text, Textarea, VStack } from '@chakra-ui/react';
+import { Avatar, Button, HStack, Input, StackProps, Text, Textarea, VStack } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { database, Post } from '@/database';
@@ -53,13 +53,8 @@ const PostInput: React.FC<PostInputProps> = (props) => {
 
   return (
     <HStack alignItems={'flex-start'} {...props._hstack} px={2} pr={4}>
-      <HStack>
-        <Image
-          w={12}
-          h={12}
-          rounded={'50%'}
-          src={'https://xsgames.co/randomusers/avatar.php?g=female'}
-        />
+      <HStack userSelect={'none'}>
+        <Avatar name={user?.name} src={user?.image} w={12}/>
       </HStack>
       <VStack pt={2} alignItems={'flex-start'} flex={1}>
         <VStack alignItems={'stretch'} w={'full'}>

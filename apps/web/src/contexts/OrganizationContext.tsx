@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 
 type OrganizationContextType = {
   organization: Organization | null;
+  setOrganization(value: Organization): void
   isLoading: boolean
 }
 
@@ -21,27 +22,26 @@ const OrganizationProvider: React.FC<OrganizationProviderProps> = ({ children, i
   const [isLoading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
+    const organization : Organization = JSON.parse(localStorage.getItem('organization') || '{}');
     if (!isAuthenticated) {
-      setLoading(false)
+      setLoading(false);
       return
     }
 
-    const organization = localStorage.getItem('organization') || v4();
-
-    if (organization) {
-      setLoading(true);
-      fetcher<Organization>('/organizations/' + organization )
+    if (organization?.id) {
+      fetcher<Organization>('/organizations/' + organization.id )
         .then(setOrganization)
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
           localStorage.removeItem('organization')
         })
         .finally(() => setLoading(false))
+    } else {
+      setLoading(false);
     }
   }, [isAuthenticated]);
 
   return (
-    <OrganizationContext.Provider value={{ organization, isLoading }}>
+    <OrganizationContext.Provider value={{ organization, setOrganization, isLoading }}>
       {children}
     </OrganizationContext.Provider>
   )

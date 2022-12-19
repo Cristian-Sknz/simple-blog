@@ -7,6 +7,7 @@ import { useEffectState, useObserverState } from '@/hooks/useEffectState';
 
 import InteractionButton from './InteractionButton';
 import {
+  Avatar,
   Heading,
   HStack,
   Image,
@@ -29,12 +30,9 @@ const Post: React.FC<PostProps> = (props) => {
 
   return (
     <HStack alignItems={'flex-start'}>
-      <HStack>
+      <HStack userSelect={'none'}>
         <SkeletonCircle w={12} h={12} isLoaded={!!user}>
-          <Image w={12} h={12}
-            rounded={'50%'}
-            src={user?.image || 'https://xsgames.co/randomusers/avatar.php?g=male'}
-          />
+          <Avatar name={user?.name} src={user?.image} w={12}/>
         </SkeletonCircle>
       </HStack>
 

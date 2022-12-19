@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Button, HStack, Image, StackProps, Textarea, VStack } from '@chakra-ui/react';
+import { Avatar, Button, HStack, StackProps, Textarea, VStack } from '@chakra-ui/react';
+import { useUser } from '@contexts/AuthContext';
 
 interface CommentInputProps {
   _hstack?: StackProps;
@@ -21,10 +22,11 @@ const schema = yup.object({
 })
  
 const CommentInput: CommentInputFC = (props, ref) => {
-  const [isLoading, setLoading] = useState(false);
   const { register, handleSubmit, formState: { errors: { content } } } = useForm({
     resolver: yupResolver(schema),
   });
+  const [isLoading, setLoading] = useState(false);
+  const user = useUser()
 
   const onSend = useCallback(async ({ content }: any) => {
     try {
@@ -39,13 +41,8 @@ const CommentInput: CommentInputFC = (props, ref) => {
 
   return (
     <HStack px={2} alignItems={'flex-start'} {...props._hstack}>
-      <HStack>
-        <Image
-          w={12}
-          h={12}
-          rounded={'50%'}
-          src={'https://xsgames.co/randomusers/avatar.php?g=female'}
-        />
+      <HStack userSelect={'none'}>
+        <Avatar name={user?.name} src={user?.image} w={12}/>
       </HStack>
       <VStack pt={2} align={'flex-start'} flex={1}>
         <HStack w={'100%'}>

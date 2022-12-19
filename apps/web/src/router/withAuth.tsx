@@ -45,6 +45,10 @@ const RouteElement: React.FC<RouteElementProps> = (props) => {
         return <Navigate to={props.redirect || '/'}/>
       }
 
+      if (isLoading) {
+        break;
+      }
+
       if (!organization && !isLoading) {
         return <Navigate to={props.redirect || '/app/organizations'}/>
       }
