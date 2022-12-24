@@ -1,6 +1,6 @@
 package me.sknz.simpleblog.domain.service
 
-import me.sknz.simpleblog.domain.dto.CommentDTO
+import me.sknz.simpleblog.api.request.CommentDTO
 import me.sknz.simpleblog.domain.model.BlogPost
 import me.sknz.simpleblog.domain.model.CommentLike
 import me.sknz.simpleblog.domain.model.PostComment

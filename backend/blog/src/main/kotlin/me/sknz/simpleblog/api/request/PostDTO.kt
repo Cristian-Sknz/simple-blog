@@ -1,4 +1,4 @@
-package me.sknz.simpleblog.domain.dto
+package me.sknz.simpleblog.api.request
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank

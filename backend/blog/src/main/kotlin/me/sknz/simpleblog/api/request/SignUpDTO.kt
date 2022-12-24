@@ -1,4 +1,4 @@
-package me.sknz.simpleblog.domain.dto
+package me.sknz.simpleblog.api.request
 
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank

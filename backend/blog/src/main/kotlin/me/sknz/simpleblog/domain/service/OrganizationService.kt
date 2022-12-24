@@ -1,6 +1,6 @@
 package me.sknz.simpleblog.domain.service
 
-import me.sknz.simpleblog.domain.dto.OrganizationDTO
+import me.sknz.simpleblog.api.request.OrganizationDTO
 import me.sknz.simpleblog.domain.model.BlogUser
 import me.sknz.simpleblog.domain.model.Organization
 import me.sknz.simpleblog.infra.repository.OrganizationRepository

@@ -1,7 +1,7 @@
 package me.sknz.simpleblog.api.controller
 
 import jakarta.validation.Valid
-import me.sknz.simpleblog.domain.dto.SignUpDTO
+import me.sknz.simpleblog.api.request.SignUpDTO
 import me.sknz.simpleblog.domain.service.SignUpService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

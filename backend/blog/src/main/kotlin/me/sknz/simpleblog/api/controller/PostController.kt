@@ -1,8 +1,8 @@
 package me.sknz.simpleblog.api.controller
 
 import jakarta.validation.Valid
-import me.sknz.simpleblog.domain.dto.PostDTO
-import me.sknz.simpleblog.domain.model.BlogPost
+import me.sknz.simpleblog.api.response.sync.SyncedPostResponse
+import me.sknz.simpleblog.api.request.PostDTO
 import me.sknz.simpleblog.domain.model.PostLike
 import me.sknz.simpleblog.domain.service.PostService
 import org.springframework.http.HttpStatus
@@ -20,22 +20,23 @@ class PostController(
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
-    fun getOrganizationPosts(@PathVariable organization: UUID): Flux<BlogPost> {
-        return posts.getPosts(organization)
+    fun getOrganizationPosts(@PathVariable organization: UUID): Flux<SyncedPostResponse> {
+        return posts.getPosts(organization).map(::SyncedPostResponse)
     }
 
     @GetMapping(path = ["/{post}"], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.OK)
     fun getOrganizationPost(@PathVariable organization: UUID,
-                            @PathVariable post: UUID): Mono<BlogPost> {
-        return posts.getPost(organization, post)
+                            @PathVariable post: UUID): Mono<SyncedPostResponse> {
+        return posts.getPost(organization, post).map(::SyncedPostResponse)
     }
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @ResponseStatus(HttpStatus.CREATED)
     fun createNewPost(@PathVariable organization: UUID,
-                      @RequestBody @Valid post: PostDTO): Mono<BlogPost> {
-        return posts.create(organization, post)
+                      @RequestBody @Valid post: PostDTO
+    ): Mono<SyncedPostResponse> {
+        return posts.create(organization, post).map(::SyncedPostResponse)
     }
 
     @DeleteMapping(path = ["/{post}"], produces = [MediaType.APPLICATION_JSON_VALUE])

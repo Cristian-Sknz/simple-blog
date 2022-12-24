@@ -1,14 +1,10 @@
 package me.sknz.simpleblog.domain.service
 
-import me.sknz.simpleblog.domain.model.BlogPost
-import me.sknz.simpleblog.domain.model.BlogUser
-import me.sknz.simpleblog.domain.model.DeletedObject
-import me.sknz.simpleblog.domain.model.PostComment
+import me.sknz.simpleblog.api.response.sync.*
+import me.sknz.simpleblog.domain.model.*
 import me.sknz.simpleblog.domain.utils.SyncObject
 import me.sknz.simpleblog.domain.utils.getSyncObjectFrom
-import me.sknz.simpleblog.infra.repository.DeletedObjectRepository
-import me.sknz.simpleblog.infra.repository.PostCommentRepository
-import me.sknz.simpleblog.infra.repository.PostRepository
+import me.sknz.simpleblog.infra.repository.*
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -20,6 +16,8 @@ class SyncService(
     val members: MemberService,
     val posts: PostRepository,
     val comments: PostCommentRepository,
+    val likes: PostLikeRepository,
+    val commentLikes: CommentLikeRepository,
     val deletes: DeletedObjectRepository
 ) {
 
@@ -28,49 +26,81 @@ class SyncService(
             .flatMapMany { uuid ->
                 Flux.create { sink ->
                     val deletions = getDeletions(uuid, timestamp).cache()
-
-                    sink.next(getPostSync(uuid, timestamp, deletions).flux())
-                        .next(getMemberSync(uuid, timestamp, deletions).flux())
-                        .next(getCommentsSync(uuid, timestamp, deletions).flux())
-                        .complete()
+                    val posts = posts.findByOrganizationId(organization).cache()
+                    sink.apply {
+                        next(getMemberSync(uuid, timestamp, deletions).flux())
+                        next(getPostSync(uuid, posts, timestamp, deletions).flux())
+                        next(getCommentsSync(uuid, posts, timestamp, deletions).flux())
+                        next(getPostLikeSync(uuid, posts, timestamp, deletions).flux())
+                        next(getCommentLikeSync(uuid, posts, timestamp, deletions))
+                    }.complete()
                 }.flatMap { it }
             }.collectMap({ it.table }, { it })
     }
 
     fun getMemberSync(organization: UUID, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
         if (timestamp == null) {
-            return getSyncObjectFrom(BlogUser.table, members.users.findByOrganizationsContains(organization), null, deletions)
+            return getSyncObjectFrom(BlogUser.table, members.users.findByOrganizationsContains(organization)
+                .map(::SyncedUserResponse), null, deletions)
         }
 
         return getSyncObjectFrom(BlogUser.table,
-            members.users.findByOrganizationsContainsAndCreatedAtAfter(organization, timestamp),
-            members.users.findByOrganizationsContainsAndUpdatedAtAfter(organization, timestamp),
+            members.users.findByOrganizationsContainsAndCreatedAtAfter(organization, timestamp).map(::SyncedUserResponse),
+            members.users.findByOrganizationsContainsAndUpdatedAtAfter(organization, timestamp).map(::SyncedUserResponse),
             deletions
         )
     }
 
-    fun getPostSync(organization: UUID, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
+    fun getPostSync(organization: UUID, posts: Flux<BlogPost>, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
         if (timestamp == null) {
-            return getSyncObjectFrom(BlogPost.table, posts.findByOrganizationId(organization), null, deletions)
+            return getSyncObjectFrom(BlogPost.table, posts.map(::SyncedPostResponse), null, deletions)
         }
 
         return getSyncObjectFrom(
             BlogPost.table,
-            posts.findByOrganizationIdAndCreatedAtAfter(organization, timestamp),
-            posts.findByOrganizationIdAndUpdatedAtAfter(organization, timestamp),
+            this.posts.findByOrganizationIdAndCreatedAtAfter(organization, timestamp).map(::SyncedPostResponse),
+            this.posts.findByOrganizationIdAndUpdatedAtAfter(organization, timestamp).map(::SyncedPostResponse),
             deletions
         )
     }
 
-    fun getCommentsSync(organization: UUID, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
-        val ids = posts.findByOrganizationId(organization).flatMap { Flux.fromIterable(it.comments) }
+    fun getCommentsSync(organization: UUID, posts: Flux<BlogPost>, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
+        val ids = posts.flatMap { Flux.fromIterable(it.comments) }
         if (timestamp == null) {
-            return getSyncObjectFrom(PostComment.table, comments.findAllById(ids), null, deletions)
+            return getSyncObjectFrom(PostComment.table, comments.findAllById(ids)
+                .map(::SyncedCommentResponse), null, deletions)
         }
 
         return getSyncObjectFrom(PostComment.table,
-            comments.findAllByIdAndCreatedAtAfter(ids, timestamp),
-            comments.findAllByIdAndUpdatedAtAfter(ids, timestamp),
+            comments.findAllByIdAndCreatedAtAfter(ids, timestamp).map(::SyncedCommentResponse),
+            comments.findAllByIdAndUpdatedAtAfter(ids, timestamp).map(::SyncedCommentResponse),
+            deletions
+        )
+    }
+
+    fun getPostLikeSync(organization: UUID, posts: Flux<BlogPost>, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
+        val ids = posts.flatMap { Flux.fromIterable(it.likes) }
+        if (timestamp == null) {
+            return getSyncObjectFrom(PostLike.table, likes.findAllById(ids).map(::SyncedLikeResponse), null, deletions)
+        }
+
+        return getSyncObjectFrom(PostLike.table,
+            likes.findAllByIdAndCreatedAtAfter(ids, timestamp).map(::SyncedLikeResponse),
+            likes.findAllByIdAndUpdatedAtAfter(ids, timestamp).map(::SyncedLikeResponse),
+            deletions
+        )
+    }
+
+    fun getCommentLikeSync(organization: UUID, posts: Flux<BlogPost>, timestamp: OffsetDateTime?, deletions: Flux<DeletedObject>): Mono<SyncObject> {
+        val ids = posts.flatMap { Flux.fromIterable(it.comments) }
+        if (timestamp == null) {
+            return getSyncObjectFrom(CommentLike.table, commentLikes.findAllByCommentIdIn(ids)
+                .map(::SyncedCommentLikeResponse), null, deletions)
+        }
+
+        return getSyncObjectFrom(CommentLike.table,
+            commentLikes.findAllByCommentIdInAndCreatedAtAfter(ids, timestamp).map(::SyncedCommentLikeResponse),
+            commentLikes.findAllByCommentIdInAndUpdatedAtAfter(ids, timestamp).map(::SyncedCommentLikeResponse),
             deletions
         )
     }

@@ -1,8 +1,8 @@
 package me.sknz.simpleblog.api.controller
 
 import jakarta.validation.Valid
-import me.sknz.simpleblog.domain.dto.OrganizationDTO
-import me.sknz.simpleblog.domain.dto.OrganizationInviteDTO
+import me.sknz.simpleblog.api.request.OrganizationDTO
+import me.sknz.simpleblog.api.request.OrganizationInviteDTO
 import me.sknz.simpleblog.domain.model.Organization
 import me.sknz.simpleblog.domain.service.EmitterService
 import me.sknz.simpleblog.domain.service.InviteService

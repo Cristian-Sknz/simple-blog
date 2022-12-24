@@ -1,6 +1,6 @@
 package me.sknz.simpleblog.domain.service
 
-import me.sknz.simpleblog.domain.dto.SignUpDTO
+import me.sknz.simpleblog.api.request.SignUpDTO
 import me.sknz.simpleblog.domain.model.BlogUser
 import me.sknz.simpleblog.infra.repository.UserRepository
 import org.springframework.http.HttpStatus

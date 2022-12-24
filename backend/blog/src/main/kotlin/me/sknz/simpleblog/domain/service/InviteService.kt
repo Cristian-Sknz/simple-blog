@@ -1,6 +1,6 @@
 package me.sknz.simpleblog.domain.service
 
-import me.sknz.simpleblog.domain.dto.OrganizationInviteDTO
+import me.sknz.simpleblog.api.request.OrganizationInviteDTO
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
