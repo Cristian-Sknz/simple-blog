@@ -9,55 +9,44 @@ function backendFetch(path: string, options?: RequestInit) {
 
 function authenticatedFetch(path: string, options?: RequestInit) {
   const resource = path.startsWith('/') ? path.substring(1) : path;
-  return fetch(`http://localhost:8080/api/${resource}`, {
+
+  const request = fetch(`http://localhost:8080/api/${resource}`, {
     ...options, 
     headers: {
       'Authorization': `Bearer ${new Cookies().get("app-token")}`,
       'Content-Type': 'application/json',
       ...options?.headers
     }
+  });
+
+  return request.then(async (response) => {
+    if (response.status >= 200 
+      && response.status < 400) {
+      return response
+    }
+    if (response.status === 401) {
+      throw new ErrorResponse(response.status, response.statusText, "Usuário não esta autenticado.");
+    }
+  
+    const json = await response.json() as Record<string, any>
+    if (!json?.message) {
+      throw new ErrorResponse(response.status, response.statusText, "Ocorreu um erro ao fazer uma requisição")
+    }
+  
+    throw new ErrorResponse(response.status, response.statusText, json.message);
   })
 }
 
-async function fetcher<T = any>(path: string) {
-  const response = await authenticatedFetch(path)
-  if (response.status >= 200 
-      && response.status < 400) {
-    return (await response.json()) as T
-  }
-
-  if (response.status === 401) {
-    throw new ErrorResponse(response.status, response.statusText, "Usuário não esta autenticado.");
-  }
-
-  const json = await response.json() as Record<string, any>
-  if (!json?.message) {
-    throw new ErrorResponse(response.status, response.statusText, "Ocorreu um erro ao fazer uma requisição")
-  }
-
-  throw new ErrorResponse(response.status, response.statusText, json.message);
+async function fetcher<T = any>(path: string, options?: RequestInit) {
+  return await authenticatedFetch(path, options)
+    .then((response) => response.json() as T)
 }
 
 async function poster<T = any>(path: string, args?: any) {
-  const response = await authenticatedFetch(path, {
+  return await authenticatedFetch(path, {
     method: 'POST',
     body: JSON.stringify(args?.arg),
-  });
-
-  if (response.status >= 200 
-      && response.status < 400) {
-    return response.json() as T
-  }
-  if (response.status === 401) {
-    throw new ErrorResponse(response.status, response.statusText, "Usuário não esta autenticado.");
-  }
-
-  const json = await response.json() as Record<string, any>
-  if (!json?.message) {
-    throw new ErrorResponse(response.status, response.statusText, "Ocorreu um erro ao fazer uma requisição")
-  }
-
-  throw new ErrorResponse(response.status, response.statusText, json.message);
+  }).then(response => response.json() as T);
 }
 
 type Messages = {

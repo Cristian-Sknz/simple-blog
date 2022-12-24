@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactSVG from '@assets/react.svg';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -18,8 +18,7 @@ import {
   Text,
   InputGroup, 
   InputLeftAddon, 
-  Button, 
-  FormErrorMessage
+  Button
 } from '@chakra-ui/react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -42,11 +41,21 @@ const schema = yup.object({
 
 
 const LoginScreen: React.FC<any> = () => {
-  const { register, formState: { errors }, handleSubmit } = useForm<SignInData>({
+  const { register, formState: { errors }, handleSubmit, setError } = useForm<SignInData>({
     resolver: yupResolver(schema)
   });
   const [loading, setLoading] = useState<boolean>(false);
   const { signIn } = useAuth();
+
+  const onLogin = useCallback((data: SignInData) => {
+    setLoading(true);
+    signIn(data).catch((err: any) => {
+      setError('username', {
+        message: 'Usuário ou senha estão incorretos!'
+      });
+      setLoading(false);
+    });
+  }, [signIn])
 
   return (
     <VStack justifyContent={'center'} bg={'gray.600'} w={'full'} h={'100vh'}>
@@ -71,17 +80,17 @@ const LoginScreen: React.FC<any> = () => {
             <InputLeftAddon>
               <FontAwesomeIcon icon={faUser}/>
             </InputLeftAddon>
-            <Input {...register('username')} placeholder='Insira o Usuario/Email'/>
+            <Input isInvalid={!!errors['username']} {...register('username')} placeholder='Insira o Usuario/Email'/>
           </InputGroup>
           <InputGroup>
             <InputLeftAddon>
               <FontAwesomeIcon icon={faLock}/>
             </InputLeftAddon>
-            <Input {...register('password')} placeholder='Senha' type={'password'}/>
+            <Input isInvalid={!!errors['password']} {...register('password')} placeholder='Senha' type={'password'}/>
           </InputGroup>
-          <Text>{(errors['username'] || errors['password'])?.message || 'sem errors'}</Text>
+          <Text>{(errors['username'] || errors['password'])?.message}</Text>
 
-          <Button onClick={handleSubmit(signIn)} w={'full'} colorScheme={'green'} type={'submit'}>
+          <Button loadingText={'Entrando'} isLoading={loading} onClick={handleSubmit(onLogin)} w={'full'} colorScheme={'green'} type={'submit'}>
             Entrar
           </Button>
 

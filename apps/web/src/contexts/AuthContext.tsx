@@ -1,10 +1,11 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { Cookies, useCookies } from 'react-cookie';
+import { Cookies } from 'react-cookie';
 import { BlogUser, database } from '@/database';
 import { useConnection } from './ConnectionContext';
 import * as UseSelector from 'use-context-selector';
 import { authenticatedFetch, backendFetch } from '@/libs/fetch';
 import OrganizationProvider from './OrganizationContext';
+import LoadingScreen from '@screens/LoadingScreen';
 
 export type SignInData = {
   username: string;
@@ -13,8 +14,8 @@ export type SignInData = {
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: BlogUser | null;
-  signIn: (data: SignInData) => void;
+  user?: BlogUser | null;
+  signIn: (data: SignInData) => Promise<void>;
   logout: () => void;
   flush: () => void;
 }
@@ -22,27 +23,25 @@ interface AuthContextType {
 const AuthContext = UseSelector.createContext<AuthContextType>({} as AuthContextType);
 
 const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [isAuthenticated, setAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<BlogUser | null>(null);
-  const [cookies, setCookies, removeCookies] = useCookies();
+  const [isAuthenticated, setAuthenticated] = useState<boolean>();
+  const [user, setUser] = useState<BlogUser | null>();
   const { isOffline } = useConnection();
 
   useEffect(() => {
     async function fetch() {
-      const logged = localStorage.getItem('logged_user')
-
+      const logged = localStorage.getItem('logged_user');
       if (isOffline) {
         if (!logged) {
           setAuthenticated(false);
           return null;
         }
-        const user = await database.get<BlogUser>(BlogUser.table).findAndObserve(logged);
+        const user = database.get<BlogUser>(BlogUser.table).findAndObserve(logged);
         const subscription = user.subscribe((user) => setUser(user!!));
         setAuthenticated(true);
         return subscription;
       }
 
-      if (cookies['app-token'] && logged) {
+      if (new Cookies().get('app-token') && logged) {
         const user = await database.get<BlogUser>(BlogUser.table).findAndObserve(logged);
         const subscription = user.subscribe((user) => setUser(user!!));
         setAuthenticated(true);
@@ -57,7 +56,7 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return () => {
       subscription.then((subscription) => subscription?.unsubscribe());
     };
-  }, [cookies, isOffline]);
+  }, [isOffline]);
 
   const signIn = useCallback(async (data: SignInData) => {
     const response = await backendFetch('/auth/login', {
@@ -73,38 +72,37 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     const { expires: maxAge, token } = await response.json();
-    setCookies('app-token', token, { maxAge });
+    const cookies = new Cookies();
+    cookies.set('app-token', token, { maxAge });
 
     const { id, name, username, email } = await (await authenticatedFetch('/me')).json();
-    
+
     await database.write(async () => {
       await database.unsafeResetDatabase();
       const user = await database.get<BlogUser>(BlogUser.table).create((user) => {
-        user._raw.id = id
+        user._raw.id = id;
         user.name = name;
         user.username = username;
         user.email = email;
       });
-      
-      setUser(user)
+
+      setUser(user);
     });
-    localStorage.setItem('logged_user', id)
+    localStorage.setItem('logged_user', id);
     setAuthenticated(true);
   }, []);
 
   const logout = useCallback(() => {
-    removeCookies('app-token');
+    new Cookies().remove('app-token');
     setAuthenticated(false);
     database.write(async () => {
-      await database.get<BlogUser>(BlogUser.table)
-        .query()
-        .destroyAllPermanently();
+      await database.get<BlogUser>(BlogUser.table).query().destroyAllPermanently();
     });
   }, []);
 
   const flush = useCallback(async () => {
     if (isOffline) {
-      const logged = localStorage.getItem('logged_user')
+      const logged = localStorage.getItem('logged_user');
       if (!logged) {
         setAuthenticated(false);
         return;
@@ -121,17 +119,19 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     setAuthenticated(false);
   }, [isAuthenticated, isOffline]);
 
-  return (
+  return typeof isAuthenticated == 'undefined' ? (
+    <LoadingScreen />
+  ) : (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
+        isAuthenticated: !!isAuthenticated,
         signIn,
         logout,
         user,
         flush,
       }}
     >
-      <OrganizationProvider isAuthenticated={isAuthenticated}>
+      <OrganizationProvider isAuthenticated={isAuthenticated!!}>
         {children}
       </OrganizationProvider>
     </AuthContext.Provider>

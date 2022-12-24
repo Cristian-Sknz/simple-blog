@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import * as UseSelector from 'use-context-selector';
 import { fetcher } from '@/libs/fetch';
 import { Organization } from '@/database';
-import { v4 } from 'uuid';
+import LoadingScreen from '@screens/LoadingScreen';
+import SyncProvider from './SyncContext';
 
 type OrganizationContextType = {
   organization: Organization | null;
   setOrganization(value: Organization): void
-  isLoading: boolean
 }
 
 const OrganizationContext = UseSelector.createContext<OrganizationContextType>({} as OrganizationContextType)
@@ -18,13 +18,12 @@ type OrganizationProviderProps = {
 }
 
 const OrganizationProvider: React.FC<OrganizationProviderProps> = ({ children, isAuthenticated }) => {
-  const [organization, setOrganization] = useState<Organization | null>(null);
-  const [isLoading, setLoading] = useState<boolean>(true)
+  const [organization, setOrganization] = useState<Organization | null>();
 
   useEffect(() => {
     const organization : Organization = JSON.parse(localStorage.getItem('organization') || '{}');
     if (!isAuthenticated) {
-      setLoading(false);
+      setOrganization(null);
       return
     }
 
@@ -33,16 +32,18 @@ const OrganizationProvider: React.FC<OrganizationProviderProps> = ({ children, i
         .then(setOrganization)
         .catch(() => {
           localStorage.removeItem('organization')
-        })
-        .finally(() => setLoading(false))
-    } else {
-      setLoading(false);
+        });
     }
+    setOrganization(null);
   }, [isAuthenticated]);
 
-  return (
-    <OrganizationContext.Provider value={{ organization, setOrganization, isLoading }}>
-      {children}
+  return typeof organization == 'undefined' ? (
+    <LoadingScreen/>
+  ) : (
+    <OrganizationContext.Provider value={{ organization, setOrganization }}>
+      <SyncProvider>
+        {children}
+      </SyncProvider>
     </OrganizationContext.Provider>
   )
 }

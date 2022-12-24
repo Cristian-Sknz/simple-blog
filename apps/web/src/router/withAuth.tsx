@@ -28,7 +28,7 @@ interface RouteElementProps {
 }
 
 const RouteElement: React.FC<RouteElementProps> = (props) => {
-  const { isLoading, organization } = useOrganization()
+  const { organization } = useOrganization()
   const isAuthenticated = useContextSelector(AuthContext, (value) => value.isAuthenticated);
 
   switch(props.access || AccessType.ALL) {
@@ -45,11 +45,7 @@ const RouteElement: React.FC<RouteElementProps> = (props) => {
         return <Navigate to={props.redirect || '/'}/>
       }
 
-      if (isLoading) {
-        break;
-      }
-
-      if (!organization && !isLoading) {
+      if (!organization) {
         return <Navigate to={props.redirect || '/app/organizations'}/>
       }
       break

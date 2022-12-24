@@ -41,7 +41,7 @@ const PostInput: React.FC<PostInputProps> = (props) => {
           post.title = newPost.title;
           post.subtitle = newPost.subtitle;
           post.content = newPost.content;
-          post.user.set(user);
+          post.user.set(user!!);
         });
       })
     } finally {

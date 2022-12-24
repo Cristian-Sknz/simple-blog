@@ -95,7 +95,7 @@ const Sidebar: React.FC = () => {
           </ListItem>
         </List>
       </Stack>
-      <UserPopover onLogoutClick={logout} user={user}/>
+      <UserPopover onLogoutClick={logout} user={user!!}/>
     </VStack>
   );
 };

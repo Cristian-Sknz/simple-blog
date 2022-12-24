@@ -27,8 +27,8 @@ class Post extends Model {
   @text('subtitle') subtitle?: string;
   @text('content') content: string;
 
-  @readonly @date('created_at') createdAt: Date;
-  @readonly @date('updated_at') updatedAt: Date;
+  @date('created_at') createdAt: Date;
+  @date('updated_at') updatedAt: Date;
 
   @immutableRelation(Tables.BlogUser, 'user_id') user: Relation<BlogUser>;
   @children(Tables.Comment) comments: Query<Comment>;
