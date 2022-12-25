@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Card, VStack } from '@chakra-ui/react';
+import React from 'react';
+import { VStack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { Q } from '@nozbe/watermelondb';
 
 import Post from '@/components/Post';
 import PostInput from '@components/PostInput';
-import { database, Post as DatabasePost } from '@/database';
+import Card from '@components/Post/Card';
 import Header from '@components/Header';
+import { database, Post as DatabasePost } from '@/database';
 import { useObserverState } from '@hooks/useEffectState';
  
 const BlogFeed: React.FC = () => {
@@ -25,16 +26,7 @@ const BlogFeed: React.FC = () => {
         <VStack alignItems='stretch'>
           {posts?.map(post => (
             <Card 
-              _hover={{ bg: 'gray.700' }} 
-              key={post.id} 
-              mt={'0 !important'}
-              as={'article'} 
-              alignItems={'stretch'} 
-              transition={'250ms'} 
-              cursor={'pointer'}
-              borderTopWidth={1}
-              borderColor={'gray.500'}
-              p={2} 
+              key={post.id}
               onClick={() => navigate(`post/${post.id}`)}
             >
               <Post post={post} onCommentClick={(event) => {

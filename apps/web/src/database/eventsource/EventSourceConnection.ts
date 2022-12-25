@@ -1,5 +1,6 @@
 import { EventSourceMessage, FetchEventSourceInit } from '@microsoft/fetch-event-source';
 import * as Handlers from '@/database/eventsource/handlers';
+import { ErrorResponse } from '@remix-run/router';
 
 type EventSourceEvents =  'onopen' | 'onmessage' | 'onclose' | 'onerror' | 'headers';
 type HandlerFn = ((item: Record<string, string>) => Promise<void>) | undefined;
@@ -11,7 +12,7 @@ class EventSourceConnection implements Pick<FetchEventSourceInit, EventSourceEve
 
   public headers: Record<string, string>;
 
-  constructor(eventId: string) {
+  constructor(eventId: string, private signal: AbortController) {
     this.headers = { 'Event-Id': eventId }
   }
 
@@ -39,6 +40,11 @@ class EventSourceConnection implements Pick<FetchEventSourceInit, EventSourceEve
     functions.forEach((fn) => fn!!(data));
   }
 
+  public onerror = (err: any) => {
+    if (err?.status === 401) {
+      this.signal.abort(err.data)
+    }
+  }
 
   public onclose = () => {
     console.debug('EventSource: Conexão com o servidor de sincronização foi fechada.')

@@ -40,7 +40,7 @@ class SyncController(
     }
 
     @PostMapping(path = ["sync"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun push(@PathVariable organization: UUID): Mono<Any> {
-        TODO("Ainda não foi implementado.")
+    fun push(@PathVariable organization: UUID): Mono<Void> {
+        return Mono.fromRunnable {}
     }
 }

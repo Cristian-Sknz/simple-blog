@@ -45,7 +45,7 @@ async function fetcher<T = any>(path: string, options?: RequestInit) {
 async function poster<T = any>(path: string, args?: any) {
   return await authenticatedFetch(path, {
     method: 'POST',
-    body: JSON.stringify(args?.arg),
+    body: JSON.stringify(args?.arg || args),
   }).then(response => response.json() as T);
 }
 

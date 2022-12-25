@@ -16,7 +16,7 @@ interface InteractionButtonProps {
   hoverColor: ColorProps['color'];
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 
-  children: string | number;
+  children?: string | number;
 }
 
 const InteractionButton: React.FC<InteractionButtonProps> = (props) => {

@@ -5,6 +5,7 @@ import { Q } from '@nozbe/watermelondb';
 import { database, Post } from '@/database';
 import { Card, Heading, Hide, Input, InputGroup, InputLeftAddon, List, SkeletonText, Text, Tooltip, VStack } from '@chakra-ui/react';
 import { useObserverState } from '@hooks/useEffectState';
+import Link from '@components/Link';
 
 interface PopularPostsProps {}
 
@@ -58,10 +59,12 @@ const PopularPosts: React.FC<PopularPostsProps> = () => {
             {posts?.map((post) => (
               <Tooltip key={post.id} bg={'gray.900'} rounded={8} placement={'top'} label={post.title}>
                 <VStack as={'li'} fontSize={'sm'} _hover={{ bg: 'gray.600'}} alignItems={'stretch'} lineHeight={1.2} rounded={8} py={2} px={1}>
-                  <Text fontFamily={'Poppins'} fontWeight={500} color={'white'} noOfLines={1}>
-                    {post.title}
-                  </Text>
-                  <Text fontFamily={'Montserrat'} mt={'0 !important'} color={'white'} noOfLines={1}>{post.subtitle}</Text>
+                  <Link display={'flex'} alignItems={'flex-start'} flexDir={'column'} to={`post/${post.id}`}>
+                    <Text fontFamily={'Poppins'} fontWeight={500} color={'white'} noOfLines={1}>
+                      {post.title}
+                    </Text>
+                    <Text fontFamily={'Montserrat'} mt={'0 !important'} color={'white'} noOfLines={1}>{post.subtitle}</Text>
+                  </Link>
                 </VStack>
               </Tooltip>
             ))}
