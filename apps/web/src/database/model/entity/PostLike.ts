@@ -1,5 +1,5 @@
 import { Model, Relation } from '@nozbe/watermelondb';
-import { immutableRelation } from '@nozbe/watermelondb/decorators';
+import { immutableRelation, date } from '@nozbe/watermelondb/decorators';
 import { Associations } from '@nozbe/watermelondb/Model';
 import { tableSchema } from '@nozbe/watermelondb/Schema';
 import { Tables } from './Tables';
@@ -21,6 +21,9 @@ class PostLike extends Model {
 
   @immutableRelation(Tables.Post, 'post_id') post: Relation<Post>;
   @immutableRelation(Tables.BlogUser, 'user_id') user: Relation<BlogUser>;
+
+  @date('created_at') createdAt: Date;
+  @date('updated_at') updatedAt: Date;
 }
 
 const PostLikeSchema = tableSchema({
@@ -28,6 +31,8 @@ const PostLikeSchema = tableSchema({
   columns: [
     { name: 'post_id', type: 'string', isIndexed: true },
     { name: 'user_id', type: 'string', isIndexed: true },
+    { name: 'created_at', type: 'number' },
+    { name: 'updated_at', type: 'number' }
   ]
 });
 
