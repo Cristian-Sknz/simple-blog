@@ -1,0 +1,102 @@
+{
+  "changes": {
+    "posts": {
+      "created": [
+        {
+          "id": "c1227dab-283e-495f-85d7-805df4f17141",
+          "_status": "created",
+          "_changed": "",
+          "title": "Novo Post",
+          "subtitle": "",
+          "content": "meu novo post!",
+          "user_id": "140499f4-ecb7-4b0e-b4f5-00362da079e3",
+          "created_at": 1671269433033,
+          "updated_at": 1671269433033
+        }
+      ],
+      "updated": [
+        {
+          "id": "840499f4-ecb7-4b0e-b4f5-00362da039e3",
+          "_status": "created",
+          "_changed": "",
+          "title": "Objeto Invalido",
+          "subtitle": "",
+          "content": "",
+          "user_id": "140499f4-ecb7-4b0e-b4f5-00362da079e3",
+          "created_at": 1671269433033,
+          "updated_at": 1671269433038
+        },
+        {
+          "id": "c1227dab-283e-495f-85d7-805df4f17141",
+          "_status": "created",
+          "_changed": "",
+          "title": "Novo Post Atualizado",
+          "subtitle": "",
+          "content": "atualização do meu post!",
+          "user_id": "140499f4-ecb7-4b0e-b4f5-00362da079e3",
+          "created_at": 1671269433033,
+          "updated_at": 1671269433039
+        }
+      ],
+      "deleted": []
+    },
+    "comments": {
+      "created": [
+        {
+          "id": "f6c0ebe8-102b-4f0e-b9b0-f84efb9cff6a",
+          "_status": "created",
+          "_changed": "",
+          "content": "dwdwdwdwdwdwdwdw",
+          "user_id": "140499f4-ecb7-4b0e-b4f5-00362da079e3",
+          "post_id": "c1227dab-283e-495f-85d7-805df4f17141",
+          "created_at": 1671269473580,
+          "updated_at": 1671269473580
+        }
+      ],
+      "updated": [],
+      "deleted": []
+    },
+    "users": {
+      "created": [
+        {
+          "id": "140499f4-ecb7-4b0e-b4f5-00362da079e3",
+          "_status": "created",
+          "_changed": "",
+          "name": "Cristian Ferreira",
+          "username": "admin",
+          "email": "admin@admin.com",
+          "image": null
+        }
+      ],
+      "updated": [],
+      "deleted": []
+    },
+    "post_likes": {
+      "created": [
+        {
+          "id": "7f7871a0-6eac-4d54-b8ed-7aff7a16d8a1",
+          "_status": "created",
+          "_changed": "",
+          "post_id": "c1227dab-283e-495f-85d7-805df4f17141",
+          "user_id": "140499f4-ecb7-4b0e-b4f5-00362da079e3"
+        }
+      ],
+      "updated": [],
+      "deleted": []
+    },
+    "comment_likes": {
+      "created": [
+        {
+          "id": "c166b15d-5c35-481c-a013-e5fe77c1e364",
+          "_status": "created",
+          "_changed": "",
+          "comment_id": "f6c0ebe8-102b-4f0e-b9b0-f84efb9cff6a",
+          "user_id": "140499f4-ecb7-4b0e-b4f5-00362da079e3"
+        }
+      ],
+      "updated": [],
+      "deleted": []
+    }
+  },
+  "lastPulledAt": 5454
+}
