@@ -1,4 +1,4 @@
-import { Model, tableSchema } from '@nozbe/watermelondb';
+import { Model, tableSchema, Collection } from '@nozbe/watermelondb';
 import { children, text, date } from '@nozbe/watermelondb/decorators';
 import { Associations } from '@nozbe/watermelondb/Model';
 import Post from './Post';
@@ -21,7 +21,7 @@ class BlogUser extends Model {
   @date('created_at') createdAt: Date;
   @date('updated_at') updatedAt: Date;
 
-  @children(Tables.Post) posts: Array<Post>;
+  @children(Tables.Post) posts: Collection<Post>;
 }
 
 const BlogUserSchema = tableSchema({

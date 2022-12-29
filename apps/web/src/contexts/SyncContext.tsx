@@ -25,9 +25,10 @@ const SyncProvider: React.FC<PropsWithChildren> = ({ children }) => {
         return fetcher<SyncObjects>(`/organizations/${organization.id}/sync?last_pulled_at=${lastPulledAt || 0}`)
       },
       pushChanges: async ({ changes, lastPulledAt}) => {
-        /*poster(`/organizations/${organization.id}/sync?last_pulled_at=${lastPulledAt || 0}`, {
-          changes
-        })*/
+        poster(`/organizations/${organization.id}/sync?last_pulled_at=${lastPulledAt || 0}`, {
+          changes,
+          lastPulledAt
+        });
       },
     })
   }, [organization]);

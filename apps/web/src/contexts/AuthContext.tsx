@@ -80,6 +80,7 @@ const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     await database.write(async () => {
       await database.unsafeResetDatabase();
       const user = await database.get<BlogUser>(BlogUser.table).create((user) => {
+        user._raw._status = 'synced';
         user._raw.id = id;
         user.name = name;
         user.username = username;
