@@ -5,7 +5,7 @@ import me.sknz.simpleblog.domain.model.Model
 import java.time.Instant
 import java.time.ZoneOffset
 
-abstract class SyncedModel<T>(
+abstract class SyncedModelResponse<T>(
     @JsonProperty("created_at")
     open val createdAt: Long,
     @JsonProperty("updated_at")

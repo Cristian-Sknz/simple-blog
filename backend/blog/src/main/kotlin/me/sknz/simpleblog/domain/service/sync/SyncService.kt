@@ -1,13 +1,16 @@
-package me.sknz.simpleblog.domain.service
+package me.sknz.simpleblog.domain.service.sync
 
+import me.sknz.simpleblog.api.request.SyncObjectRequest
 import me.sknz.simpleblog.api.response.sync.*
 import me.sknz.simpleblog.domain.model.*
+import me.sknz.simpleblog.domain.service.MemberService
 import me.sknz.simpleblog.domain.utils.SyncObject
 import me.sknz.simpleblog.domain.utils.getSyncObjectFrom
 import me.sknz.simpleblog.infra.repository.*
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -21,6 +24,17 @@ class SyncService(
     val deletes: DeletedObjectRepository
 ) {
 
+    fun pushChanges(organization: UUID, sync: SyncObjectRequest): Mono<Void> {
+        return members.isOrganizationMember(organization)
+            .flatMap { it.t1.id.toMono().zipWith(sync.toMono()) }
+            .flatMapMany { tuple ->
+                val post = PostModelSync(posts, organization, tuple.t1, tuple.t2.changes.posts)
+                posts.saveAll(post.onProcessCreated())
+                    .thenMany(posts.saveAll(post.onProcessUpdated()))
+                    .thenMany(posts.deleteAll(post.onProcessDeleted()))
+            }.then()
+    }
+
     fun pullChanges(organization: UUID, timestamp: OffsetDateTime? = null): Mono<Map<String, Any>> {
         return members.isOrganizationMember(organization).map { it.t2 }
             .flatMapMany { uuid ->
@@ -32,7 +46,7 @@ class SyncService(
                         next(getPostSync(uuid, posts, timestamp, deletions).flux())
                         next(getCommentsSync(uuid, posts, timestamp, deletions).flux())
                         next(getPostLikeSync(uuid, posts, timestamp, deletions).flux())
-                        next(getCommentLikeSync(uuid, posts, timestamp, deletions))
+                        next(getCommentLikeSync(uuid, posts, timestamp, deletions).flux())
                     }.complete()
                 }.flatMap { it }
             }.collectMap({ it.table }, { it })

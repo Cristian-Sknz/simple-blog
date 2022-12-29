@@ -14,7 +14,7 @@ data class SyncedCommentLikeResponse(
     override val createdAt: Long,
     @JsonProperty("updated_at")
     override val updatedAt: Long,
-): SyncedModel<UUID>(createdAt, updatedAt) {
+): SyncedModelResponse<UUID>(createdAt, updatedAt) {
 
     constructor(like: CommentLike) : this(
         like.id,

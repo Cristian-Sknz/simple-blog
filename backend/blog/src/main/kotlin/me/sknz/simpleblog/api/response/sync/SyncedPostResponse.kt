@@ -15,7 +15,7 @@ data class SyncedPostResponse(
     override val createdAt: Long,
     @JsonProperty("updated_at")
     override val updatedAt: Long,
-): SyncedModel<UUID>(createdAt, updatedAt) {
+): SyncedModelResponse<UUID>(createdAt, updatedAt) {
 
     constructor(post: BlogPost) : this(
         post.id,

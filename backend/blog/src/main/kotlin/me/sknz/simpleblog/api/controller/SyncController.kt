@@ -1,7 +1,8 @@
 package me.sknz.simpleblog.api.controller
 
+import me.sknz.simpleblog.api.request.SyncObjectRequest
 import me.sknz.simpleblog.api.response.SyncResponse
-import me.sknz.simpleblog.domain.service.SyncService
+import me.sknz.simpleblog.domain.service.sync.SyncService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
@@ -40,7 +41,7 @@ class SyncController(
     }
 
     @PostMapping(path = ["sync"], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun push(@PathVariable organization: UUID): Mono<Void> {
-        return Mono.fromRunnable {}
+    fun push(@PathVariable organization: UUID, @RequestBody sync: SyncObjectRequest): Mono<Void> {
+        return this.sync.pushChanges(organization, sync)
     }
 }
