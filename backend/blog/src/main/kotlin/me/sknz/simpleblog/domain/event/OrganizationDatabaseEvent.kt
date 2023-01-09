@@ -4,5 +4,5 @@ data class OrganizationDatabaseEvent<T> (
     val organization: String,
     val type: String,
     val payload: T,
-    val emitId: String?
+    val clientId: String?
 )

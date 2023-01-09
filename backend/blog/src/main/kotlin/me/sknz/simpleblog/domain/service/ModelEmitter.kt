@@ -28,7 +28,7 @@ abstract class ModelEmitter(
                 val event = OrganizationDatabaseEvent(
                     organization.toString(),
                     "${model.getTable()}_${eventType.type}",
-                    model, it.eventId
+                    model, it.clientId
                 )
 
                 emitter.emit(organization, event)

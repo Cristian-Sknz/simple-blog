@@ -7,5 +7,5 @@ class BearerTokenAuthentication(
     principal: Any,
     password: String,
     authorities: Collection<GrantedAuthority>,
-    val eventId: String?
+    val clientId: String?
 ) : UsernamePasswordAuthenticationToken(principal, password, authorities)

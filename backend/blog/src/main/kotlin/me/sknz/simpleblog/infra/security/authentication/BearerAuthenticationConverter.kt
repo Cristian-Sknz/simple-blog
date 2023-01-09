@@ -35,7 +35,7 @@ class BearerAuthenticationConverter(
 
     private fun usernamePasswordAuthenticationToken(tuple: Tuple2<DecodedJWT, HttpHeaders>): Authentication {
         return BlogUserDetails(tuple.t1).let {
-            BearerTokenAuthentication(it, it.password, it.authorities, tuple.t2.getFirst("Event-Id"))
+            BearerTokenAuthentication(it, it.password, it.authorities, tuple.t2.getFirst("X-Client-Id"))
         }
     }
 }

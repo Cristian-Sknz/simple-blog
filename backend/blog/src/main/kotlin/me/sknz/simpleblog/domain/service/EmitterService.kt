@@ -28,7 +28,7 @@ class EmitterService(private val organizations: OrganizationRepository) {
                     .map { it.authentication }
                     .cast(BearerTokenAuthentication::class.java)
                     .map {
-                        it.eventId == null || event.emitId == null || it.eventId != event.emitId
+                        it.clientId == null || event.clientId == null || it.clientId != event.clientId
                     }
             }
     }
