@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { fetchEventSource as eventsource } from '@microsoft/fetch-event-source';
 import { synchronize } from '@nozbe/watermelondb/sync'
-import { authenticatedFetch, fetcher, poster } from '@/libs/fetch';
+import { authenticatedFetch, clientId, fetcher, poster } from '@/libs/fetch';
 import { v4 } from 'uuid';
 import EventSourceConnection from '@/database/eventsource/EventSourceConnection';
 import { database, SyncChanges } from '@/database';
@@ -13,7 +13,6 @@ type SyncObjects= {
 }
 
 const SyncProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const eventId = useMemo(() => v4(), []);
   const { organization } = useOrganization();
 
   useEffect(() => {
@@ -38,7 +37,7 @@ const SyncProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const controller = new AbortController();
 
     eventsource(`organizations/${organization.id}/changes`, {
-      ...new EventSourceConnection(eventId, controller),
+      ...new EventSourceConnection(clientId, controller),
       signal: controller.signal,
       fetch: authenticatedFetch
     });

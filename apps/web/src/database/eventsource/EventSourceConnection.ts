@@ -1,6 +1,5 @@
 import { EventSourceMessage, FetchEventSourceInit } from '@microsoft/fetch-event-source';
 import * as Handlers from '@/database/eventsource/handlers';
-import { ErrorResponse } from '@remix-run/router';
 
 type EventSourceEvents =  'onopen' | 'onmessage' | 'onclose' | 'onerror' | 'headers';
 type HandlerFn = ((item: Record<string, string>) => Promise<void>) | undefined;
@@ -12,8 +11,8 @@ class EventSourceConnection implements Pick<FetchEventSourceInit, EventSourceEve
 
   public headers: Record<string, string>;
 
-  constructor(eventId: string, private signal: AbortController) {
-    this.headers = { 'Event-Id': eventId }
+  constructor(clientId: string, private signal: AbortController) {
+    this.headers = { 'X-Client-Id': clientId }
   }
 
   public onopen = (response: Response) => {

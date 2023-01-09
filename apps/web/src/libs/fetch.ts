@@ -1,6 +1,8 @@
 import { Cookies } from 'react-cookie';
 import { ErrorResponse } from '@remix-run/router';
+import { v4 } from 'uuid';
 
+const clientId = v4();
 
 function backendFetch(path: string, options?: RequestInit) {
   const resource = path.startsWith('/') ? path.substring(1) : path;
@@ -15,6 +17,7 @@ function authenticatedFetch(path: string, options?: RequestInit) {
     headers: {
       'Authorization': `Bearer ${new Cookies().get("app-token")}`,
       'Content-Type': 'application/json',
+      'X-Client-Id': clientId,
       ...options?.headers
     }
   });
@@ -62,4 +65,4 @@ function handleError(error: ErrorResponse | null, messages: Messages): string | 
 }
 
 
-export { backendFetch, authenticatedFetch, fetcher, poster, handleError }
+export { backendFetch, authenticatedFetch, fetcher, poster, handleError, clientId }
