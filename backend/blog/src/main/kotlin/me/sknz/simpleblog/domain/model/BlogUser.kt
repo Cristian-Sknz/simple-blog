@@ -1,6 +1,7 @@
 package me.sknz.simpleblog.domain.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import me.sknz.simpleblog.api.response.sync.SyncedUserResponse
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -29,6 +30,8 @@ class BlogUser: Model<UUID>{
     lateinit var updatedAt: OffsetDateTime
 
     override fun getTable() = table
+
+    override fun toResponseModel() = SyncedUserResponse(this)
 
     companion object {
         const val table = "users"

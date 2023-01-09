@@ -6,4 +6,6 @@ interface Model<T> {
 
     fun getTable(): String
 
+    fun toResponseModel(): Model<*> = this
+
 }

@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.domain.model
 
+import me.sknz.simpleblog.api.response.sync.SyncedCommentResponse
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -26,6 +27,8 @@ class PostComment: Model<UUID> {
     lateinit var updatedAt: OffsetDateTime
 
     override fun getTable() = table
+
+    override fun toResponseModel() = SyncedCommentResponse(this)
 
     companion object {
         const val table = "comments"

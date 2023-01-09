@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.domain.model
 
+import me.sknz.simpleblog.api.response.sync.SyncedPostResponse
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -39,6 +40,8 @@ class BlogPost: Model<UUID> {
         this.updatedAt = OffsetDateTime.now(ZoneOffset.UTC)
         return this
     }
+
+    override fun toResponseModel() = SyncedPostResponse(this)
 
     companion object {
         const val table = "posts"

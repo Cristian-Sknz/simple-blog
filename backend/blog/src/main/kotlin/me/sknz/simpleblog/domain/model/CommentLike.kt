@@ -1,5 +1,6 @@
 package me.sknz.simpleblog.domain.model
 
+import me.sknz.simpleblog.api.response.sync.SyncedCommentLikeResponse
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -23,6 +24,10 @@ class CommentLike : Model<UUID> {
     lateinit var updatedAt: OffsetDateTime
 
     override fun getTable() = table
+
+    override fun toResponseModel() = SyncedCommentLikeResponse(this)
+
+    
     companion object {
         const val table = "comment_likes"
     }
