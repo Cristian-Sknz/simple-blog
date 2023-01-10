@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useMutation from 'swr/mutation';
 import { handleError } from '@/libs/fetch';
+import InviteConsentModal from './InviteConsentModal';
 import {
   Button,
   FormLabel,
@@ -26,7 +27,8 @@ import {
 } from '@chakra-ui/react';
 
 interface InviteOrganizationProps extends Omit<ModalProps, 'children'> {
-  onOrganizationJoin?(invite: string): void
+  onOrganizationJoin?(organization: any): void
+  fetcher: (value: `/invite/${string}`) => any
   poster: (value: `/invites/${string}/join`) => any
 }
 
@@ -39,16 +41,18 @@ const schema = yup.object({
     .required()
 })
 
+
 const InviteOrganization: React.FC<InviteOrganizationProps> = (props) => {
   const { register, reset, handleSubmit, ...form } = useForm({
     resolver: yupResolver(schema)
   })
-  const mutation = useMutation('/invites', (path, args) => {
-    return props.poster(`${path}/${args['arg']}/join` as any)
+  const mutation = useMutation('/invite', async (_, args) => {
+    return props.fetcher(`/invites/${args['arg']}` as any)
+      .then((response: any) => ({...response, invite: args['arg']}))
   });
 
   const uuid = useMemo(() => v4(), [props.isOpen])
-  const error = mutation.error ? handleError(mutation.error, {}) : form.formState.errors?.invite
+  const error = mutation.error ? handleError(mutation.error, {}) : form.formState.errors?.invite?.message
 
   useEffect(() => {
     reset()
@@ -116,26 +120,28 @@ const InviteOrganization: React.FC<InviteOrganizationProps> = (props) => {
             Voltar
           </Button>
           <Button onClick={handleSubmit(async ({ invite }) => {
-            mutation.trigger(invite, {
-              onSuccess: () => props.onOrganizationJoin && props.onOrganizationJoin(invite)
-            })
+            mutation.trigger(invite);
           })} 
             type='submit' 
             colorScheme={'twitter'}
             isLoading={mutation.isMutating}
+            isDisabled={!!form.formState.errors?.invite}
             loadingText={'Verificando'}
           >
             Entrar
           </Button>
         </ModalFooter>
+        {mutation.data && (
+          <InviteConsentModal 
+            poster={props.poster} 
+            organization={mutation.data} 
+            onClose={mutation.reset}
+            onOrganizationJoin={props.onOrganizationJoin}
+          />
+        )}
       </ModalContent>
     </Modal>
   );
 };
-
-const messages = {
-  400: 'Você já faz parte desta organização',
-  404: 'Convite invalido ou não existe'
-}
 
 export default InviteOrganization;

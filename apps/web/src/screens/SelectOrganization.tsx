@@ -57,10 +57,11 @@ const SelectOrganization: React.FC = () => {
         onOrganizationCreate={(created) => console.log(created)}
       />
       <InviteOrganization 
+        fetcher={fetcher}
         poster={poster} 
         onClose={invite.onClose} 
         isOpen={invite.isOpen} 
-        onOrganizationJoin={(join) => console.log(join)}
+        onOrganizationJoin={onSelectOrganization}
       />
       <ExistentOrganization 
         fetcher={fetcher}
