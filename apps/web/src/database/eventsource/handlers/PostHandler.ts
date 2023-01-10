@@ -14,7 +14,7 @@ class PostHandler extends EventSourceHandler {
 
   public async onCreated(item: Record<string, string>): Promise<void> {
     await database.write(async () => {
-      const user = await database.get<BlogUser>(BlogUser.table).find(item.userId);
+      const user = await database.get<BlogUser>(BlogUser.table).find(item.user_id);
       await this.collection.create((post) => {
         post._raw.id = item.id;
         post._raw._status = 'synced';
@@ -22,8 +22,8 @@ class PostHandler extends EventSourceHandler {
         post.title = item.title;
         post.subtitle = item.subtitle;
         post.content = item.content;
-        post.createdAt = moment(item.createdAt).toDate();
-        post.updatedAt = moment(item.updatedAt).toDate();
+        post.createdAt = moment(item.created_at_utc).toDate();
+        post.updatedAt = moment(item.updated_at_utc).toDate();
         post.user.set(user);
       });
     });

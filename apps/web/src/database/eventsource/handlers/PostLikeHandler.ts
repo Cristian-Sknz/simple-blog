@@ -19,8 +19,8 @@ class PostLikeHandler extends EventSourceHandler {
       await this.collection.create((like) => {
         like._raw.id = item.id;
         like._raw._status = 'synced';
-        like.createdAt = moment(item.createdAt).toDate();
-        like.updatedAt = moment(item.updatedAt).toDate();
+        like.createdAt = moment(item.created_at_utc).toDate();
+        like.updatedAt = moment(item.updated_at_utc).toDate();
         like.user.set(user);
         like.post.set(post);
       });
