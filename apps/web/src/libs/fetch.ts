@@ -42,14 +42,20 @@ function authenticatedFetch(path: string, options?: RequestInit) {
 
 async function fetcher<T = any>(path: string, options?: RequestInit) {
   return await authenticatedFetch(path, options)
-    .then((response) => response.json() as T)
+    .then(async response => {
+      const text = await response.text();
+      return ((text.length == 0) ? null : JSON.parse(text)) as T;
+    })
 }
 
 async function poster<T = any>(path: string, args?: any) {
   return await authenticatedFetch(path, {
     method: 'POST',
     body: JSON.stringify(args?.arg || args),
-  }).then(response => response.json() as T);
+  }).then(async response => {
+    const text = await response.text();
+    return ((text.length == 0) ? null : JSON.parse(text)) as T;
+  });
 }
 
 type Messages = {
